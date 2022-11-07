@@ -108,5 +108,5 @@ def main():
 
     save_oracle(jsonResult)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

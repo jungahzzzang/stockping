@@ -7,4 +7,10 @@ main = Blueprint('main', __name__, url_prefix='/')
 
 @main.route('/main', methods=['GET'])
 def index():
+
+    """
+    뉴스 데이터 가져오기
+    """
+    
+
     return render_template('index.html')

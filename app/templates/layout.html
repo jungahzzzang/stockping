@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+<ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
           <div class="sidebar-brand-icon">
             <img src="/static/img/logo/logo.png">
           </div>
-          <div class="sidebar-brand-text mx-3">Stockping</div>
+          <div class="sidebar-brand-text mx-3">Stockpingg</div>
         </a>
         <hr class="sidebar-divider my-0">
         <li class="nav-item active">
@@ -105,10 +96,28 @@
         <hr class="sidebar-divider">
         <div class="version" id="version-ruangadmin"></div>
       </ul>
-      <!-- Sidebar -->
-      <main role="main">
-      {% block content %}
-      {% endblock %}
-      </main>
-</body>
-</html>
+    {% block sidebar %}{% endblock %}
+  <!-- Sidebar -->
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
+        <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
+      </span>
+    </div>
+  </div>
+
+  <div class="container my-auto py-2">
+    <div class="copyright text-center my-auto">
+      <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - distributed by
+        <b><a href="https://themewagon.com/" target="_blank">themewagon</a></b>
+      </span>
+    </div>
+  </div>
+</footer>
+{% block footer %}{% endblock %}
+      
+      <!-- Footer -->
+

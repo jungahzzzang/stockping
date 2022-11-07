@@ -8,17 +8,24 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="/static/img/logo/logo.png" rel="icon">
-  <title>RuangAdmin - Dashboard</title>
+  <title>Stockping</title>
   <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="/static/css/ruang-admin.min.css" rel="stylesheet">
+  <script src="/static/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="/static/js/ruang-admin.min.js"></script>
+  <script src="/static/vendor/chart.js/Chart.min.js"></script>
+  <script src="/static/js/demo/chart-area-demo.js"></script> 
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     
-    {% extends 'sidebar.html' %}
-    {% block content %}
-    
+    <!-- sidebar include -->
+    {% extends 'layout.html' %}
+    {% block sidebar %}
+
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <!-- TopBar -->
@@ -465,36 +472,13 @@
             <div class="col-xl-4 col-lg-5 ">
               <div class="card">
                 <div class="card-header py-4 bg-primary d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-light">Message From Customer</h6>
+                  <h6 class="m-0 font-weight-bold text-light">오늘의 주식 뉴스</h6>
                 </div>
                 <div>
                   <div class="customer-message align-items-center">
                     <a class="font-weight-bold" href="#">
-                      <div class="text-truncate message-title">Hi there! I am wondering if you can help me with a
-                        problem I've been having.</div>
+                      <div class="text-truncate message-title">오늘의 주식 뉴스</div>
                       <div class="small text-gray-500 message-time font-weight-bold">Udin Cilok · 58m</div>
-                    </a>
-                  </div>
-                  <div class="customer-message align-items-center">
-                    <a href="#">
-                      <div class="text-truncate message-title">But I must explain to you how all this mistaken idea
-                      </div>
-                      <div class="small text-gray-500 message-time">Nana Haminah · 58m</div>
-                    </a>
-                  </div>
-                  <div class="customer-message align-items-center">
-                    <a class="font-weight-bold" href="#">
-                      <div class="text-truncate message-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                      </div>
-                      <div class="small text-gray-500 message-time font-weight-bold">Jajang Cincau · 25m</div>
-                    </a>
-                  </div>
-                  <div class="customer-message align-items-center">
-                    <a class="font-weight-bold" href="#">
-                      <div class="text-truncate message-title">At vero eos et accusamus et iusto odio dignissimos
-                        ducimus qui blanditiis
-                      </div>
-                      <div class="small text-gray-500 message-time font-weight-bold">Udin Wayang · 54m</div>
                     </a>
                   </div>
                   <div class="card-footer text-center">
@@ -535,46 +519,52 @@
               </div>
             </div>
           </div>
-
         </div>
         <!---Container Fluid-->
       </div>
       <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
-            </span>
-          </div>
-        </div>
-
-        <div class="container my-auto py-2">
-          <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - distributed by
-              <b><a href="https://themewagon.com/" target="_blank">themewagon</a></b>
-            </span>
-          </div>
-        </div>
-      </footer>
-      <!-- Footer -->
+        {% block footer %} 
+        {% endblock %}
     </div>
   </div>
-
-  {% endblock %}
-  <!-- Sidebar -->
+       {% endblock %}
 
   <!-- Scroll to top -->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script src="/static/vendor/jquery/jquery.min.js"></script>
-  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="/static/js/ruang-admin.min.js"></script>
-  <script src="/static/vendor/chart.js/Chart.min.js"></script>
-  <script src="/static/js/demo/chart-area-demo.js"></script>  
+  <script>
+    const init = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "same-origin",
+      };
+    const url = "/main";
+    //API에서 뉴스 데이터 가져오기
+    fetch(url, init)
+      .then((res) => {
+        if(res.status === 200){
+          return res.json();
+        }else{
+          console.error(`HTTP error: status: ${res.status}`);
+        }
+      })
+      .then((jsonData) => {
+        for(let i=0; i<jsonData["news"].length; i++){
+          const item = jsonData["news"][i];
+          let description = item["description"];
+          let link = item['link'];
+          
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      }) 
+  </script>
+ 
 </body>
 
 </html>
