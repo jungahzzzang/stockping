@@ -8,20 +8,15 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="/static/img/logo/logo.png" rel="icon">
-  <title>Stockping</title>
+  <title>RuangAdmin - Dashboard</title>
+  <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="/static/css/ruang-admin.min.css" rel="stylesheet">
-  <script src="/static/vendor/jquery/jquery.min.js"></script>
-  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="/static/js/ruang-admin.min.js"></script>
-  <script src="/static/vendor/chart.js/Chart.min.js"></script>
-  <script src="/static/js/demo/chart-area-demo.js"></script> 
 </head>
 
 <body id="page-top">
   <div id="wrapper">
-    
+
     <!-- sidebar include -->
     {% extends 'layout.html' %}
     {% block sidebar %}
@@ -227,7 +222,7 @@
 
           <div class="row mb-3">
             <!-- Earnings (Monthly) Card Example -->
-            <!-- <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
               <div class="card h-100">
                 <div class="card-body">
                   <div class="row align-items-center">
@@ -245,9 +240,9 @@
                   </div>
                 </div>
               </div>
-            </div> -->
+            </div>
             <!-- Earnings (Annual) Card Example -->
-            <!-- <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
               <div class="card h-100">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -265,9 +260,9 @@
                   </div>
                 </div>
               </div>
-            </div> -->
+            </div>
             <!-- New User Card Example -->
-            <!-- <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
               <div class="card h-100">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -285,9 +280,9 @@
                   </div>
                 </div>
               </div>
-            </div> -->
+            </div>
             <!-- Pending Requests Card Example -->
-            <!-- <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
               <div class="card h-100">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -305,7 +300,7 @@
                   </div>
                 </div>
               </div>
-            </div> -->
+            </div>
 
             <!-- Area Chart -->
             <div class="col-xl-8 col-lg-7">
@@ -468,19 +463,28 @@
                 <div class="card-footer"></div>
               </div>
             </div>
-            <!-- Message From Customer-->
+            <!-- 뉴스 -->
             <div class="col-xl-4 col-lg-5 ">
               <div class="card">
                 <div class="card-header py-4 bg-primary d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-light">오늘의 주식 뉴스</h6>
                 </div>
                 <div>
+                {% if news_items %}
+                {% for title in news_items %}
                   <div class="customer-message align-items-center">
                     <a class="font-weight-bold" href="#">
-                      <div class="text-truncate message-title">오늘의 주식 뉴스</div>
+                      <div class="text-truncate message-title">{{title}}</div>
                       <div class="small text-gray-500 message-time font-weight-bold">Udin Cilok · 58m</div>
                     </a>
                   </div>
+                {% endfor %}
+                {% else %}
+                <div class="customer-message align-items-center">
+                    <div class="text-truncate message-title">데이터가 존재하지 않습니다.</div>
+                  </a>
+                </div>
+                {% endif %}
                   <div class="card-footer text-center">
                     <a class="m-0 small text-primary card-link" href="#">View More <i
                         class="fas fa-chevron-right"></i></a>
@@ -519,22 +523,30 @@
               </div>
             </div>
           </div>
+
         </div>
         <!---Container Fluid-->
       </div>
       <!-- Footer -->
-        {% block footer %} 
-        {% endblock %}
+      {% block footer %} 
+      {% endblock %}
     </div>
   </div>
-       {% endblock %}
+  {% endblock %}
 
   <!-- Scroll to top -->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <script>
+  <script src="/static/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="/static/js/ruang-admin.min.js"></script>
+  <script src="/static/vendor/chart.js/Chart.min.js"></script>
+  <script src="/static/js/demo/chart-area-demo.js"></script>  
+
+  <!-- <script script type="text/javascript">
     const init = {
       method: "GET",
       headers: {
@@ -555,16 +567,16 @@
       .then((jsonData) => {
         for(let i=0; i<jsonData["news"].length; i++){
           const item = jsonData["news"][i];
-          let description = item["description"];
-          let link = item['link'];
-          
+          let title = item["title"];
+          let originallink = item['originallink'];
         }
       })
       .catch((err) => {
         console.log(err)
-      }) 
-  </script>
- 
+      });
+
+  </script> -->
+
 </body>
 
 </html>

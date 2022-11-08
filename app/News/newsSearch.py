@@ -5,15 +5,17 @@ import urllib.parse
 import json
 import cx_Oracle
 import re
-# from News.config import *
+
+with open('config.json', 'r') as f:
+    config = json.load(f)
+db_info = config['DB']
+api_info = config['NAVERAPI']
 
 # CODE_1
 def get_request_url(url):
-    client_id="CD_wYAn2Fncz2V0cVhh0"
-    client_secret="W_TLk3pV43"
     request = urllib.request.Request(url)
-    request.add_header("X-Naver-Client-Id",client_id)
-    request.add_header("X-Naver-Client-Secret",client_secret)
+    request.add_header("X-Naver-Client-Id",api_info['client_id'])
+    request.add_header("X-Naver-Client-Secret",api_info['client_secret'])
     try:
         response = urllib.request.urlopen(request) # 정보 추출
         if response.getcode() == 200:              # OK(성공)
@@ -66,7 +68,7 @@ def save_oracle(jsonResult):
     # 환경변수 등록
     os.environ["PATH"] = LOCATION + ";" + os.environ["PATH"]
     # 오라클 클라우드 DB 사용자 이름, 비밀번호, dsn 입력
-    connection = cx_Oracle.connect(user='admin', password='Tmxhrvld1234!', dsn='stockping_high')
+    connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
     # 커서 생성
     cursor = connection.cursor()
     # DB 저장
