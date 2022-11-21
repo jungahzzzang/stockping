@@ -7,9 +7,9 @@ import cx_Oracle
 import os
 import schedule
 import time
-from bs4 import BeautifulSoup
-from datetime import datetime
-import FinanceDataReader as fdr
+from bs4 import BeautifulSoup as bs
+from tqdm import tqdm
+import requests
 
 app = Flask(__name__)
 
@@ -74,7 +74,7 @@ def job():
 def index():
     connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
     cursor = connection.cursor()
-    sql = "SELECT * FROM TB_NEWS WHERE NEWS_NUM <=30" # 뉴스 데이터 SELECT
+    sql = "SELECT * FROM TB_NEWS WHERE NEWS_NUM <=25" # 뉴스 데이터 SELECT
     cursor.execute(sql)
     news_items = cursor.fetchall()
     print("++++++++++"+ str(news_items))
@@ -88,25 +88,31 @@ def index():
     source = index_taget.read()
     index_taget.close()
     
-    soup = BeautifulSoup(source, 'html.parser', from_encoding='euc-kr')
+    soup = bs(source, 'html.parser', from_encoding='euc-kr')
     kospi_value = soup.find("span", id="KOSPI_now")
     kosdaq_value = soup.find("span", id="KOSDAQ_now")
     kospi_change = soup.find("span", id='KOSPI_change').text
     kosdaq_change = soup.find("span", id='KOSDAQ_change').text
     
+    # page_url = 'https://finance.naver.com/sise/sise_market_sum.nhn?sosok=' + str(sosok) + '&page=1'
+    # page_res = requests.get(page_url)
+    # page_soup = bs(page_res.text, 'html.parser')
+    # last_page = page_soup.select_one('td.pgRR > a').get('href').split('=')[-1]
+    
     # 거래 순위 데이터 크롤링
-    rank_url = "https://finance.naver.com/sise/sise_market_sum.nhn?sosok=0"
-    rank_target = urllib.request.urlopen(rank_url)
-    source = rank_target.read()
-    rank_target.close()
+    # for page in tqdm(range(1, int(last_page)+1, 1)):
+    #     target_url = 'https://finance.naver.com/sise/sise_market_sum.nhn?sosok=' + str(sosok) + '&page=' + str(page)
+    #     target_res = requests.get(target_url)
+    #     target_soup = bs(target_res.text, 'html.parser')
+    #     tbody = target_soup.select_one('tbody')
+    #     trs = tbody.find_all('tr', attrs={'onmouseover': 'mouseOver(this)'})
     
-    soup = BeautifulSoup(source, 'html.parser', from_encoding='euc-kr')
-    #event_name 
-    #current_price =
-    #previous =
-    #fluctu =
-    
-    
+    #     for tr in trs:
+    #         href = tr.find_all('a')
+    #         name = href[0].text
+    #         code = href[0].get('href').split('=')[-1]   
+            
+    # return render_template('index.html')
     return render_template('index.html', news_items=news_items, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change)
     # return jsonify({"news": news_items})
     
