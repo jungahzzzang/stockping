@@ -77,7 +77,7 @@ def index():
     sql = "SELECT * FROM TB_NEWS WHERE NEWS_NUM <=25" # 뉴스 데이터 SELECT
     cursor.execute(sql)
     news_items = cursor.fetchall()
-    print("++++++++++"+ str(news_items))
+    # print("++++++++++"+ str(news_items))
 
     cursor.close()
     connection.close()
@@ -93,28 +93,45 @@ def index():
     kosdaq_value = soup.find("span", id="KOSDAQ_now")
     kospi_change = soup.find("span", id='KOSPI_change').text
     kosdaq_change = soup.find("span", id='KOSDAQ_change').text
-    
-    # page_url = 'https://finance.naver.com/sise/sise_market_sum.nhn?sosok=' + str(sosok) + '&page=1'
-    # page_res = requests.get(page_url)
-    # page_soup = bs(page_res.text, 'html.parser')
-    # last_page = page_soup.select_one('td.pgRR > a').get('href').split('=')[-1]
-    
+
     # 거래 순위 데이터 크롤링
-    # for page in tqdm(range(1, int(last_page)+1, 1)):
-    #     target_url = 'https://finance.naver.com/sise/sise_market_sum.nhn?sosok=' + str(sosok) + '&page=' + str(page)
-    #     target_res = requests.get(target_url)
-    #     target_soup = bs(target_res.text, 'html.parser')
-    #     tbody = target_soup.select_one('tbody')
-    #     trs = tbody.find_all('tr', attrs={'onmouseover': 'mouseOver(this)'})
+    target_url = 'https://finance.naver.com/sise/sise_market_sum.naver'
+    target_res = requests.get(target_url)
+    target_soup = bs(target_res.text, 'html.parser')
+    # tbody = target_soup.find('tbody')
+    # trs = tbody.find_all('tr', attrs={'onmouseover': 'mouseOver(this)'})
+    data_rows = target_soup.find("table", attrs={"class": "type_2"}).find("tbody").find_all("tr")
     
-    #     for tr in trs:
-    #         href = tr.find_all('a')
-    #         name = href[0].text
-    #         code = href[0].get('href').split('=')[-1]   
-            
-    # return render_template('index.html')
-    return render_template('index.html', news_items=news_items, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change)
-    # return jsonify({"news": news_items})
+    for row in data_rows:
+        # 각 row마다 td를 가지고옴
+        columns = row.find_all("td")
+        # td가 1개인 것(데이터 없는 것)은 skip
+        if len(columns)<=1:
+            continue
+        top_stock=[]
+        # data = []
+        for column in columns:
+            origin = column.get_text().strip()
+            top_stock.append(origin[0:5])
+        # print(type(top_stock))
+        
+        startPos = 0
+        dataLength = top_stock.__len__()
+        for i in range(startPos, dataLength):
+            after = [top_stock[i:i+5] for i in range(0, len(top_stock), 5)]
+            print('****'+str(after))
+        
+        #top_stock = [data[i:i+5] for i in range(0, len(data), 5)]
+        
+        
+        
+        # print('최종최종최종최종'+str(top_stock))
+        # top_stock.append([name, today, yesterday, high])
+    
+    
+    
+          
+    return render_template('index.html', news_items=news_items, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=top_stock)
     
 if __name__ == '__main__':
     app.run(debug=True)
