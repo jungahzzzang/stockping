@@ -3,11 +3,13 @@ import json
 import csv
 
 
-with open('config.json', 'r') as f: #Instant Client 접속을 위한 전자지갑속 오라클 클라우드DB 정보(tnsnames.ora 파일)
+with open('../../settings/config.json', 'r') as f: #Instant Client 접속을 위한 전자지갑속 오라클 클라우드DB 정보(tnsnames.ora 파일)
     config = json.load(f)
 db_info = config['DB']
-HAPI_info = config['HAPI']
+HAPI_info = config['HANTOAPI']
 
+appKey = HAPI_info['APP_KEY']
+appSecret = HAPI_info['APP_SECRET']
 #실전도메인
 URL_BASE = "https://openapi.koreainvestment.com:9443"
 
@@ -20,25 +22,9 @@ def load_token(path):
     f.close()
     return line
 
-def save_csv():
-    f = open('write.csv','a', newline='')#r 읽기 w 쓰기  a 추가
-    wr = csv.writer(f)
-    wr.writerow(nowJ())
-    f.close()
-
-
-def load_csv():# csv 파일 가져오기
-    f = open('write.csv','r')
-    rdr = csv.reader(f)
-    
-    for line in rdr:
-        print(line)
-    f.close()
-
-
 
 token_path = "T.txt"
-stream_path = "S.txt"
+# stream_path = "S.txt"
 at = load_token(token_path)
 
 # s = websockk()
@@ -51,8 +37,8 @@ def nowJ():
     Jcode = "005930"
     headers = {"Content-Type":"application/json", 
             "authorization": f"Bearer {at}",
-            "appkey":HAPI_info['appKey'],
-            "appsecret":HAPI_info['appSecret'],
+            "appkey": appKey,
+            "appsecret":appSecret,
             "tr_id":"FHKST01010100"}
 
     params = {
@@ -69,29 +55,27 @@ def nowJ():
     # print(res.json()['output']['stck_oprc']) # 주식 고가
     # print(res.json()['output']['stck_oprc']) # 주식 저가
     # print(res.json()['output']['stck_clpr']) # 주식 종가
-    print(res.json()['output']['stck_prpr'] )#주식 현재가
+    # print(res.json()['output']['stck_prpr'] )#주식 현재가
     # print(res.json()['output']['INVT_CAFUL_YN'] )#투자유의여부
     if res.json()['rt_cd'] != "0":
         print("에러발생")
-        return 0   
+        return 0
     return res.json()['output']['rprs_mrkt_kor_name'], res.json()['output']['stck_prpr']
 
 
 
 
-
 # nowJ()
-# st = load_token(stream_path)
 
-#국내주식기간별 시세 #date와 주식code에 대한.
+#국내주식기간별 시세 #date와 주식code에 대한 정보.
 def getStock(dataF, dataS, Jcode):
 
     PATH = "uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice"
     URL = f"{URL_BASE}/{PATH}"
     headers = {"Content-Type":"application/json",
             "authorization": f"Bearer {at}",
-            "appkey":HAPI_info['appKey'],
-            "appsecret":HAPI_info['appSecret'],
+            "appkey" : appKey,
+            "appsecret":appSecret,
             "tr_id":"FHKST01010100",
             "custtype" : "P"}
 
@@ -100,24 +84,30 @@ def getStock(dataF, dataS, Jcode):
         "fid_input_iscd":Jcode,   #주식 코드(6자리)
         "FID_INPUT_DATE_1" : dataF,
         "FID_INPUT_DATE_2" : dataS,
-        "FID_PERIOD_DIV_CODE" : "D",
+        "FID_PERIOD_DIV_CODE" : "D", #D:일봉 W:주봉, M:월봉, Y:년봉
         "FID_ORG_ADJ_PRC" : "1"
         }
 
     res = requests.get(URL, headers=headers, params=params)
-    print(res.json())
-    # print(res.json()['output']['bstp_kor_isnm'])# 업종
-    # print(res.json()['output']['rprs_mrkt_kor_name'])# 시장 정보
-    # print(res.json()['output']['acml_vol'])# 누적 거래량
-    # print(res.json()['output']['acml_tr_pbmn']) #누적 거래 대금
+    print(res.json()["msg1"])
+    isnm = res.json()['output']['bstp_kor_isnm']# 업종 ex) 전기.전자, 화학
+    mrkt = res.json()['output']['rprs_mrkt_kor_name']# 시장 ex)KOSPI200, 코스닥
+    vol = res.json()['output']['acml_vol']# 누적 거래량
+    print(res.json()['output']['acml_tr_pbmn']) #누적 거래 대금
     # print(res.json()['output']['prdy_vrss'])#전일 대비
-    # print(res.json()['output']['prdy_vrss_sign'])# 전일 대비 부호
+    return isnm, mrkt, vol
 
-
-    # print(res.json())
-
-
-fdate = "20211101"
-sdate = "20221101"
+#일정 기간 데이터를 끌어올 방법을 모색중
+#DB에 저장되어있는 주식코드(jcode)를 가져와서 일일단위로 for문을 돌려 거래량, 종가, 시장정보를 가져올 코드 작성할것
+# 1회에는 3년치 데이터를, n회차 이후부터는 업데이트 되지 않은 정보를 insert하는 코드 작성할것
+start_date = "20201001"
+end_date = "20221101"
 jcode = "096770"
-getStock(fdate, sdate, jcode)
+getStock(start_date, end_date, jcode)
+
+#이후 nowJ같은 실시간으로 데이터를 종목별 실시간으로 데이터를 가져오는 코드 작성
+# 현재 초당 get 요청횟수가 많아 오류가 발생하는것으로 보임
+# server time을 이용해 메모리에 유의하여 요청횟수를 제한할것
+
+#마지막으로, 해외 주식 정보 또한 가져올것
+# 일일이 가져와 DB에 넣기보다, 그냥 가져와서 사용하면 안되나? 
