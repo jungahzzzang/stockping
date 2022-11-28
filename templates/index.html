@@ -68,7 +68,7 @@
                     data-setbg="/static/img/categories/category-1.jpg">
                     <div class="categories__text">
                       <h4>TOP 종목</h4>
-                        <table class="table align-items-center">
+                        <table class="table align-items-center" id="json_table">
                           <thead class="thead-light">
                             <tr>
                               <th>NO</th>
@@ -78,13 +78,13 @@
                               <th>등락률</th>
                             </tr>
                           </thead>
+                          {% if top_stock %}
+                          {% for i in top_stock %}
                           <tbody>
                               <tr>
-                                {% if top_stock %}
-                                {% for i in top_stock %}
                                 <td>{{i[0]}}</td>
                                 <td>{{i[1]}}</td>
-                                <td><span class="badge badge-success">{{i[2]}}</span></td>
+                                <td>{{i[2]}}</td>
                                 <td>{{i[3]}}</td>
                                 <td>{{i[4]}}</td>
                               </tr>
@@ -360,6 +360,35 @@
     </div>
 </div>
 <!-- Search End -->
+
+<script>
+    var selectVal = document.getElementById("json_table"), test={{top_stock | tojson}};
+    document.getElementById("json").textContent = JSON.stringify(test, undefined, 2);
+
+    const keys = Object.keys(test);
+    for(let i=-1; i<keys.length-1; i){
+        const key = keys[i++];
+        console.log(key, test[key]);
+        
+        a = JSON.stringify(test["Num"][i])
+        b = JSON.stringify(test["Name"][i])
+        c = JSON.stringify(test["Today"][i])
+        d = JSON.stringify(test["Yesterday"][i])
+        e = JSON.stringify(test["High"][i])
+        const tbl = document.getElementById("json_table");
+        const row = tbl.insertRow();
+        const cell1 = row.insertCell();
+        const cell2 = row.insertCell();
+        const cell3 = row.insertCell();
+        const cell4 = row.insertCell();
+        const cell5 = row.insertCell();
+        cell1.innerHTML = a;
+        cell2.innerHTML = b;
+        cell3.innerHTML = c;
+        cell4.innerHTML = d;
+        cell5.innerHTML = e;
+    }
+</script>
 
 <!-- Js Plugins -->
 <script src="/static/js/jquery-3.3.1.min.js"></script>
