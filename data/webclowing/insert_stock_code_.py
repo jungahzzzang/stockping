@@ -28,7 +28,7 @@ def getStockCode():
 
 def cursorLoad():
     
-    with open('config.json', 'r') as f: #Instant Client 접속을 위한 전자지갑속 오라클 클라우드DB 정보(tnsnames.ora 파일)
+    with open('../../settings/config.json', 'r') as f: #Instant Client 접속을 위한 전자지갑속 오라클 클라우드DB 정보(tnsnames.ora 파일)
         config = json.load(f)
     db_info = config['DB']
 
@@ -37,19 +37,10 @@ def cursorLoad():
     cursor = connection.cursor()
 
     kospi, kosdaq = getStockCode()
-    # print(len(kospi))
-    # cursor.execute(sql)
-    # connection.commit()
-
-    # sql = "ALTER SEQUENCE ADMIN.STOCK_SEQ INCREMENT BY 1 MINVALUE 1 MAXVALUE 9999 NOCYCLE NOCACHE NOORDER"
-    # cursor.execute(sql)
-    # connection.commit()
-
-
 
     for i in range(0,len(kospi),1):
         try:
-            sql = f"INSERT INTO ADMIN.TB_STOCK_INFO (STOCK_CODE, STOCK_NAME, STOCK_IDX) VALUES('{kospi['종목코드'][i]}', '{kospi['회사명'][i]}', STOCK_SEQ.NEXTVAL)"
+            sql = f"INSERT INTO ADMIN.TB_STOCK_INFO (IDX, STOCK_CODE, STOCK_NAME) VALUES(STOCK_SEQ.NEXTVAL, '{kospi['종목코드'][i]}', '{kospi['회사명'][i]}')"
             cursor.execute(sql)
             connection.commit()
 
@@ -59,7 +50,7 @@ def cursorLoad():
 
     for j in range(0,len(kosdaq),1):
         try:
-            sql = f"INSERT INTO ADMIN.TB_STOCK_INFO (STOCK_CODE, STOCK_NAME, STOCK_IDX) VALUES('{kosdaq['종목코드'][j]}', '{kosdaq['회사명'][j]}', STOCK_SEQ.NEXTVAL)"
+            sql = f"INSERT INTO ADMIN.TB_STOCK_INFO (IDX, STOCK_CODE, STOCK_NAME) VALUES(STOCK_SEQ.NEXTVAL, '{kosdaq['종목코드'][j]}', '{kosdaq['회사명'][j]}')"
             cursor.execute(sql)
             connection.commit()
 
