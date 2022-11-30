@@ -116,8 +116,8 @@ def index():
         for column in columns:
             origin = column.get_text().strip()
             top_stock.append(origin)
-            #print(origin)
-            print(type(top_stock))
+            print(origin)
+            print('타입'+ type(origin))
             
         del top_stock[5:]
         #print("+++++"+str(top_stock))
