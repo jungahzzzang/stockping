@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup as bs
 from tqdm import tqdm
 import requests
 import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
 
@@ -110,19 +111,28 @@ def index():
         # td가 1개인 것(데이터 없는 것)은 skip
         if len(columns)<=1:
             continue
-        top_stock=[]
         # data = []
+        top_stock = []
         for column in columns:
             origin = column.get_text().strip()
             top_stock.append(origin)
-            del top_stock[5:]
+            #print(origin)
+            print(type(top_stock))
+            
+        del top_stock[5:]
+        #print("+++++"+str(top_stock))
         
-        for i in range(0, top_stock.__len__()):
-            data = [top_stock[i:i+5] for i in range(0, len(top_stock), 5)]
-            print(data)        
-        df = pd.DataFrame([top_stock], columns=['Num', 'Name', 'Today', 'Yesterday', 'High'])
-        json_output = df.to_json()
-        json_output = json.loads(json_output.replace("\'", '"'))
+        data = []
+        data.append([top_stock])
+        #print("======"+str(data))
+        #print("+++++"+str(data))
+        #for i in range(top_stock.__len__()):
+            #data = [top_stock[i:i+5] for i in range(len(top_stock))]
+        #data.append(i)
+        #print('******'+str(data))        
+        #df = pd.DataFrame([top_stock], columns=['Num', 'Name', 'Today', 'Yesterday', 'High'])
+        #json_output = df.to_json()
+        #json_output = json.loads(json_output.replace("\'", '"'))
         #print(json_output)
     
         
