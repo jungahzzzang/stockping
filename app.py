@@ -1,3 +1,5 @@
+
+
 from flask import Flask, render_template
 from flask import current_app as app
 import json
@@ -23,8 +25,9 @@ with open(abs_path+'/settings/config.json', 'r') as f:
     db_info = config['DB']
     api_info = config['NAVERAPI']
 
-LOCATION = r"C:\\oracle\\instantclient_21_7"
-os.environ["PATH"] = LOCATION + ";" + os.environ["PATH"] 
+
+cx_Oracle.init_oracle_client(lib_dir=r"C:\instantclient_19_16") # 설치한 Instant Client 경로
+connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
 
 def getNewsData():
     dsn_info = cx_Oracle.makedsn('')
@@ -105,6 +108,9 @@ def index():
     # trs = tbody.find_all('tr', attrs={'onmouseover': 'mouseOver(this)'})
     data_rows = target_soup.find("table", attrs={"class":"type_2"}).find("tbody").find_all("tr")
     # data_rows = target_soup.find_all('tr',attrs={"id" : "siselist_tab_7"})
+   
+   
+    data = []
     for row in data_rows:
         # 각 row마다 td를 가지고옴
         columns = row.find_all("td")
@@ -117,13 +123,15 @@ def index():
             origin = column.get_text().strip()
             top_stock.append(origin)
             #print(origin)
-            print(type(top_stock))
+            # print(type(top_stock))
             
         del top_stock[5:]
+        data.append(top_stock)
         #print("+++++"+str(top_stock))
-        
-        data = []
-        data.append([top_stock])
+    for i in data: # 데이터 확인
+        print(i)
+
+
         #print("======"+str(data))
         #print("+++++"+str(data))
         #for i in range(top_stock.__len__()):
