@@ -15,6 +15,8 @@ import requests
 import pandas as pd
 import numpy as np
 
+
+
 app = Flask(__name__)
 
 abs_path = os.getcwd()
@@ -74,7 +76,9 @@ def job():
     while True:
         schedule.run_pending()
         time.sleep(1)
-        
+
+    
+
 @app.route('/main', methods=['GET'])
 def index():
     connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
@@ -87,7 +91,7 @@ def index():
     cursor.close()
     connection.close()
     
-    # 지수 데이터 크롤링
+        # 지수 데이터 크롤링
     index_url = "https://finance.naver.com/sise/"
     index_taget = urllib.request.urlopen(index_url)
     source = index_taget.read()
@@ -122,21 +126,44 @@ def index():
         for column in columns:
             origin = column.get_text().strip()
             top_stock.append(origin)
-            #print(origin)
-            # print(type(top_stock))
             
         del top_stock[5:]
         data.append(top_stock)
-        #print("+++++"+str(top_stock))
-    for i in data: # 데이터 확인
-        print(i)
+
+    
+    number = 0
+    for i in data: # % 삭제
+        data[number][4] = (i[4][:-1])
+        number = number +1
+    # print(data)
 
 
-        #print("======"+str(data))
-        #print("+++++"+str(data))
+    ## 선택 정렬을 이용해 data변수 정렬
+    def selectionSort(x):
+        length = len(x)
+        for i in range(length-1):
+            indexMin = i
+            for j in range(i+1, length):
+                if float(x[indexMin][-1]) > float(x[j][-1]):
+                    indexMin = j
+            x[i], x[indexMin] = x[indexMin], x[i]
+        return x
+
+    data = selectionSort(data)
+    data.reverse()
+
+    topten = [] #10위까지 저장
+    for i in range(0,len(data)):
+        data[i][4] = data[i][4]+'%' 
+        if i < 10:
+            topten.append(data[i])
+            topten[i][0] = str(i+1)
+
+
+    # for i in range(0,10,1):
         #for i in range(top_stock.__len__()):
             #data = [top_stock[i:i+5] for i in range(len(top_stock))]
-        #data.append(i)
+        #data.append(i
         #print('******'+str(data))        
         #df = pd.DataFrame([top_stock], columns=['Num', 'Name', 'Today', 'Yesterday', 'High'])
         #json_output = df.to_json()
@@ -160,7 +187,7 @@ def index():
     
     
           
-    return render_template('index.html', news_items=news_items, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=data)
+    return render_template('index.html', news_items=news_items, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=topten)
     
 if __name__ == '__main__':
     app.run(debug=True)
