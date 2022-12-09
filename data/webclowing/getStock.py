@@ -46,64 +46,79 @@ def getStock(dataF, dataS, Jcode):
         "FID_PERIOD_DIV_CODE" : "D", #D:일봉 W:주봉, M:월봉, Y:년봉
         "FID_ORG_ADJ_PRC" : "1"
         }
-
-    res = requests.get(URL, headers=headers, params=params)
-    # isnm = res.json()['output']['bstp_kor_isnm']# 업종 ex) 전기.전자, 화학
-    # mrkt = res.json()['output']['rprs_mrkt_kor_name']# 시장 ex)KOSPI200, 코스닥
-    # vol = res.json()['output']['acml_vol']# 누적 거래량
-    # print(res.json()['output']['acml_tr_pbmn']) #누적 거래 대금
-    # print(res.json()['output']['prdy_vrss'])#전일 대비
+    res =  requests.get(URL, headers=headers, params=params)
     # print(res.json())
-    return res.json()["output2"]
-     
+
+    df = setDateFrame(res.json())
+
+    for i in df:
+        print(i)
+    # return df
+
+
+
+#받은 데이터를 이름, 날짜, 종가, 체결량을 dict형태로 만들어주는.
+def setDateFrame(data):
+    df = []
+    
+    name = data['output1']['hts_kor_isnm']
+    print(name)
+    for i in range(len(data['output2'])):
+        date = data['output2'][i]['stck_bsop_date']
+        price = data['output2'][i]['stck_clpr']
+        deal = data['output2'][i]['acml_vol']
+
+        dict_data = {
+            'name' : f"{name}",
+            'date' : f"{date}",
+            'price' : f"{price}",
+            'deal' : f"{deal}"
+        }
+    
+        df.append(dict_data)
+
+    return df
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #일정 기간 데이터를 끌어올 방법을 모색중
 #DB에 저장되어있는 주식코드(jcode)를 가져와서 일일단위로 for문을 돌려 거래량, 종가, 시장정보를 가져올 코드 작성할것
-# 1회에는 3년치 데이터를, n회차 이후부터는 업데이트 되지 않은 정보를 insert하는 코드 작성할것
 
 #주식 코드
+import getStockInfo
+stockCode = getStockInfo.getStockCode()
+
 jcode = "005930"
 
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
 # 시작일,종료일 설정
-start = "2021-08-01"
-last = "2022-11-27"
+start = "20220101"
+last = "20220107"
 
+# 0. 'stck_bsop_date': '20221209',  영업일자 -
+# 1. 'stck_clpr': '46300',          주식 종가 -
+# 2. 'stck_oprc': '45400',          주식 시가
+# 3.  'stck_hgpr': '46450',         주식 최고가
+# 4.  'stck_lwpr': '44950',         주식 최저가
+# 5.  'acml_vol': '25740',          주식 누적 거래량
+# 6.  'acml_tr_pbmn': '1183410750', 주식 거래 대금
+# 7.  'flng_cls_code': '00',        락 구분 코드
+# 8.  'prtt_rate': '0.00',          분할 비율
+# 9.  'mod_yn': 'N',                분할변경여부
+# 10. 'prdy_vrss_sign': '2',        전일 대비 부호
+# 11. 'prdy_vrss': '1250',          전일 대비 수치
+getStock(start,last,jcode)
 
-# 시작일, 종료일 datetime 으로 변환
-startDate = datetime.strptime(start, "%Y-%m-%d")
-lastDate = datetime.strptime(last, "%Y-%m-%d")
-
-
-# 종료일 까지 반복
-while startDate <= lastDate:
-    fDate = startDate = startDate.strftime("%Y%m%d")
-    startDate = datetime.strptime(startDate, "%Y%m%d")
-
-    startDate = startDate + relativedelta(months=1)
-    nextDate = startDate + relativedelta(days=-1)
-    
-    nextDate = nextDate.strftime("%Y%m%d")
-
-    # print(fDate)
-    # print(nextDate)
-    a = getStock(fDate,nextDate,jcode)
-    for i in a:
-        print("거래일 : ", i['stck_bsop_date'])
-        print("거래량 : ", i['acml_vol'])
-        print(" 시가  : ", i['stck_oprc'])
-        print(" 종가  : ", i['stck_clpr'],"\n")
-
-
-# import cx_Oracle
-# with open('../../settings/config.json', 'r') as f:
-#     config = json.load(f)
-# db_info = config['DB']
-# cx_Oracle.init_oracle_client(lib_dir=r"C:\instantclient_19_16") 
-# # 본인이 Instant Client 넣어놓은 경로를 입력해준다
-# connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
-# cursor = connection.cursor()
-# sql ="SELECT * FROM ADMIN.TB_NEWS"
-# cursor.execute(sql)
-# daataa = cursor.fetchall()
