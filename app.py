@@ -1,5 +1,3 @@
-
-
 from flask import Flask, render_template
 from flask import current_app as app
 import json
@@ -10,10 +8,8 @@ import os
 import schedule
 import time
 from bs4 import BeautifulSoup as bs
-from tqdm import tqdm
 import requests
-import pandas as pd
-import numpy as np
+from flask import send_from_directory
 
 
 
@@ -28,7 +24,7 @@ with open(abs_path+'/settings/config.json', 'r') as f:
     api_info = config['NAVERAPI']
 
 
-cx_Oracle.init_oracle_client(lib_dir=r"C:\instantclient_19_16") # 설치한 Instant Client 경로
+cx_Oracle.init_oracle_client(lib_dir=r"C:\oracle\instantclient_21_7") # 설치한 Instant Client 경로
 connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
 
 def getNewsData():
@@ -77,7 +73,9 @@ def job():
         schedule.run_pending()
         time.sleep(1)
 
-    
+@app.route('/favicon.ico')
+def favicon():
+	return send_from_directory(os.path.join(app.root_path, 'static'),'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/main', methods=['GET'])
 def index():
@@ -158,34 +156,6 @@ def index():
         if i < 10:
             topten.append(data[i])
             topten[i][0] = str(i+1)
-
-
-    # for i in range(0,10,1):
-        #for i in range(top_stock.__len__()):
-            #data = [top_stock[i:i+5] for i in range(len(top_stock))]
-        #data.append(i
-        #print('******'+str(data))        
-        #df = pd.DataFrame([top_stock], columns=['Num', 'Name', 'Today', 'Yesterday', 'High'])
-        #json_output = df.to_json()
-        #json_output = json.loads(json_output.replace("\'", '"'))
-        #print(json_output)
-    
-        
-        # startPos = 0
-        # dataLength = top_stock.__len__()
-        # for i in range(startPos, dataLength):
-        #     after = [top_stock[i:i+5] for i in range(0, len(top_stock), 5)]
-        #     print('****'+str(after))
-        
-        #top_stock = [data[i:i+5] for i in range(0, len(data), 5)]
-        
-        
-        
-        # print('최종최종최종최종'+str(top_stock))
-        # top_stock.append([name, today, yesterday, high])
-    
-    
-    
           
     return render_template('index.html', news_items=news_items, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=topten)
     

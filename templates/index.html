@@ -1,64 +1,10 @@
-<!DOCTYPE html>
-<html lang="zxx">
+{% extends 'layout.html' %}
+{% block head %}
+    <style>
+    </style>
+{% endblock %}
 
-  <!-- Head Section Begin -->
-<head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Ashion Template">
-  <meta name="keywords" content="Ashion, unica, creative, html">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ashion | Template</title>
-
-  <!-- Google Font -->
-  <!--<link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">-->
-  <link href="https://fonts.googleapis.com/css2?family=Hi+Melody&family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
-
-  <!-- Css Styles -->
-  <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css">
-  <link rel="stylesheet" href="/static/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="/static/css/elegant-icons.css" type="text/css">
-  <link rel="stylesheet" href="/static/css/jquery-ui.min.css" type="text/css">
-  <link rel="stylesheet" href="/static/css/magnific-popup.css" type="text/css">
-  <link rel="stylesheet" href="/static/css/owl.carousel.min.css" type="text/css">
-  <link rel="stylesheet" href="/static/css/slicknav.min.css" type="text/css">
-  <link rel="stylesheet" href="/static/css/style.css" type="text/css">
-</head>
-<body>
-    <!-- Page Preloder -->
-    <!-- <div id="preloder">
-        <div class="loader"></div>
-    </div> -->
-
-    <!-- Offcanvas Menu Begin -->
-    <!--<div class="offcanvas-menu-overlay"></div>
-    <div class="offcanvas-menu-wrapper">
-        <div class="offcanvas__close">+</div>
-        <ul class="offcanvas__widget">
-            <li><span class="icon_search search-switch"></span></li>
-            <li><a href="#"><span class="icon_heart_alt"></span>
-                <div class="tip">2</div>
-            </a></li>
-            <li><a href="#"><span class="icon_bag_alt"></span>
-                <div class="tip">2</div>
-            </a></li>
-        </ul>
-        <div class="offcanvas__logo">
-            <a href="./index.html"><img src="/static/img/logo.png" alt=""></a>
-        </div>
-        <div id="mobile-menu-wrap"></div>
-        <div class="offcanvas__auth">
-            <a href="#">Login</a>
-            <a href="#">Register</a>
-        </div>
-    </div> -->
-    <!-- Offcanvas Menu End -->
-
-    {% extends 'layout.html' %}
-    {% block header %}
-
+{% block content %}
     <!-- Categories Section Begin -->
     <section class="categories">
         <div class="container-fluid">
@@ -67,7 +13,8 @@
                     <div class="categories__item categories__large__item set-bg"
                     data-setbg="/static/img/categories/category-1.jpg">
                     <div class="categories__text">
-                      <h4>TOP 종목</h4>
+                      <h4>TOP 10 종목</h4>
+                      <h1 id="clock"></h1>
                         <table class="table align-items-center" id="json_table">
                           <thead class="thead-light">
                             <tr>
@@ -343,11 +290,23 @@
     </div>
 </section> -->
 <!-- Trend Section End -->
-
-
-
-{% block footer %} 
 {% endblock %}
+
+{% block footer %}
+    <script>
+        $(document).ready(function(){
+            var target = document.getElemetById("clock");
+            function getClock(){
+                const d = new Date();
+                const h = String(d.getHours()).padStart(2,"0");
+                const m = String(d.getMinutes()).padStart(2,"0");
+                const s = String(d.getSeconds()).padStart(2,"0");
+                clock.innerText = `${h}:${m}:${s}`;
+            }
+            getClock(); //맨처음에 한번 실행
+            setInterval(getClock, 1000); //1초 주기로 새로실행
+            });
+    </script>
 {% endblock %}
 
 <!-- Search Begin -->
@@ -360,47 +319,3 @@
     </div>
 </div>
 <!-- Search End -->
-
-<script>
-    var selectVal = document.getElementById("json_table"), test={{top_stock | tojson}};
-    document.getElementById("json").textContent = JSON.stringify(test, undefined, 2);
-
-    const keys = Object.keys(test);
-    for(let i=-1; i<keys.length-1; i){
-        const key = keys[i++];
-        console.log(key, test[key]);
-        
-        a = JSON.stringify(test["Num"][i])
-        b = JSON.stringify(test["Name"][i])
-        c = JSON.stringify(test["Today"][i])
-        d = JSON.stringify(test["Yesterday"][i])
-        e = JSON.stringify(test["High"][i])
-        const tbl = document.getElementById("json_table");
-        const row = tbl.insertRow();
-        const cell1 = row.insertCell();
-        const cell2 = row.insertCell();
-        const cell3 = row.insertCell();
-        const cell4 = row.insertCell();
-        const cell5 = row.insertCell();
-        cell1.innerHTML = a;
-        cell2.innerHTML = b;
-        cell3.innerHTML = c;
-        cell4.innerHTML = d;
-        cell5.innerHTML = e;
-    }
-</script>
-
-<!-- Js Plugins -->
-<script src="/static/js/jquery-3.3.1.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/jquery.magnific-popup.min.js"></script>
-<script src="/static/js/jquery-ui.min.js"></script>
-<script src="/static/js/mixitup.min.js"></script>
-<script src="/static/js/jquery.countdown.min.js"></script>
-<script src="/static/js/jquery.slicknav.js"></script>
-<script src="/static/js/owl.carousel.min.js"></script>
-<script src="/static/js/jquery.nicescroll.min.js"></script>
-<script src="/static/js/main.js"></script>
-</body>
-
-</html>
