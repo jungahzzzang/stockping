@@ -1,0 +1,16 @@
+.topten_title {
+    font-size: 20px;
+    font-weight: bold;
+}
+.topten_title_area {
+    display: inline-block;
+}
+
+.realtime_area {
+    display: inline-block;
+    margin-left: 115px;
+}
+
+.topten_area {
+    padding-left: 186px;
+}

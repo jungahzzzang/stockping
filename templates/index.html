@@ -13,9 +13,14 @@
                     <div class="categories__item categories__large__item set-bg"
                     data-setbg="/static/img/categories/category-1.jpg">
                     <div class="categories__text">
-                      <h4>TOP 10 종목</h4>
-                      <h1 id="clock"></h1>
-                        <table class="table align-items-center" id="json_table">
+                        <div class="topten_title_area">
+                            <span class="topten_title">TOP 10 종목</span>
+                        </div>
+                        <div class="realtime_area">
+                            <span class="badge badge-danger">실시간</span>
+                            <span>{{real_time}}</span>
+                        </div>
+                        <table class="table align-items-center">
                           <thead class="thead-light">
                             <tr>
                               <th>NO</th>
@@ -53,7 +58,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 p-0">
                         <div class="categories__item set-bg" data-setbg="/static/img/categories/category-2.jpg">
                             <div class="categories__text">
-                                <h4>오늘의 증시</h4>
+                                <h4>오늘의 지수</h4>
                                 <p>358 items</p>
                                 <a href="#">Shop now</a>
                             </div>
@@ -62,26 +67,8 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 p-0">
                         <div class="categories__item set-bg" data-setbg="/static/img/categories/category-3.jpg">
                             <div class="categories__text">
-                                <h4>업종상위</h4>
+                                <h4>오늘의 주식 뉴스</h4>
                                 <p>273 items</p>
-                                <a href="#">Shop now</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                        <div class="categories__item set-bg" data-setbg="/static/img/categories/category-4.jpg">
-                            <div class="categories__text">
-                                <h4>Cosmetics</h4>
-                                <p>159 items</p>
-                                <a href="#">Shop now</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                        <div class="categories__item set-bg" data-setbg="/static/img/categories/category-5.jpg">
-                            <div class="categories__text">
-                                <h4>Accessories</h4>
-                                <p>792 items</p>
                                 <a href="#">Shop now</a>
                             </div>
                         </div>
@@ -293,20 +280,7 @@
 {% endblock %}
 
 {% block footer %}
-    <script>
-        $(document).ready(function(){
-            var target = document.getElemetById("clock");
-            function getClock(){
-                const d = new Date();
-                const h = String(d.getHours()).padStart(2,"0");
-                const m = String(d.getMinutes()).padStart(2,"0");
-                const s = String(d.getSeconds()).padStart(2,"0");
-                clock.innerText = `${h}:${m}:${s}`;
-            }
-            getClock(); //맨처음에 한번 실행
-            setInterval(getClock, 1000); //1초 주기로 새로실행
-            });
-    </script>
+   
 {% endblock %}
 
 <!-- Search Begin -->

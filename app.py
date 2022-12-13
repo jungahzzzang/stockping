@@ -89,7 +89,7 @@ def index():
     cursor.close()
     connection.close()
     
-        # 지수 데이터 크롤링
+    # 지수 데이터 크롤링
     index_url = "https://finance.naver.com/sise/"
     index_taget = urllib.request.urlopen(index_url)
     source = index_taget.read()
@@ -100,6 +100,7 @@ def index():
     kosdaq_value = soup.find("span", id="KOSDAQ_now")
     kospi_change = soup.find("span", id='KOSPI_change').text
     kosdaq_change = soup.find("span", id='KOSDAQ_change').text
+    real_time = soup.find("span", id="time1").text
 
     # 거래 순위 데이터 크롤링
     target_url = 'https://finance.naver.com/sise/sise_market_sum.naver'
@@ -157,7 +158,7 @@ def index():
             topten.append(data[i])
             topten[i][0] = str(i+1)
           
-    return render_template('index.html', news_items=news_items, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=topten)
+    return render_template('index.html', news_items=news_items, real_time=real_time, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=topten)
     
 if __name__ == '__main__':
     app.run(debug=True)
