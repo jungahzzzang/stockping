@@ -1,0 +1,120 @@
+{% extends 'layout.html' %}
+{% block head %}
+    <style>
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!-- Categories Section Begin -->
+    <section class="categories">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                    <div class="topten categories__item categories__large__item">
+                    <div class="categories__text">
+                        <div class="topten_title_area">
+                            <span class="title">TOP 50 종목</span>
+                        </div>
+                        <div class="realtime_area">
+                            <span class="badge badge-danger">실시간</span>
+                            <span>{{real_time}}</span>
+                        </div>
+                        <table class="topten_table table align-items-center">
+                          <thead class="thead-light">
+                            <tr>
+                              <th>NO</th>
+                              <th>종목명</th>
+                              <th>현재가</th>
+                              <th>전일비</th>
+                              <th>등락률</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% if top_stock %}
+                            {% for i in top_stock %}
+                              <tr>
+                                <td>{{i[0]}}</td>
+                                <td>{{i[1]}}</td>
+                                <td>{{i[2]}}</td>
+                                <td>{{i[3]}}</td>
+                                <td>{{i[4]}}</td>
+                              </tr>
+                          </tbody>
+                          {% endfor %}
+                          {% else %}
+                          <tbody>
+                            <tr>
+                                <td>데이터가 존재하지 않습니다.</td>
+                            </tr>
+                          </tbody>
+                          {% endif %}
+                        </table>
+                    </div>
+                </div>
+              </div>
+            <div class="col-md-6 p-0">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="/static/img/categories/category-2.jpg">
+                            <div class="categories__text">
+                                <h4>오늘의 지수</h4>
+                                <p>358 items</p>
+                                <a href="#">Shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="/static/img/categories/category-3.jpg">
+                            <div class="categories__text">
+                                <h4>오늘의 주식 뉴스</h4>
+                                <p>273 items</p>
+                                <a href="#">Shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Categories Section End -->
+
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>인기글</h4>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8">
+                <ul class="filter__controls">
+                    <li class="active" data-filter="*">All</li>
+                    <li data-filter=".women">Women’s</li>
+                    <li data-filter=".men">Men’s</li>
+                    <li data-filter=".kid">Kid’s</li>
+                    <li data-filter=".accessories">Accessories</li>
+                    <li data-filter=".cosmetic">Cosmetics</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block footer %}
+   
+{% endblock %}
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->

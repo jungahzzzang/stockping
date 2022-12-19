@@ -53,7 +53,7 @@
             <div class="row">
                 <div class="col-xl-3 col-lg-2">
                     <div class="header__logo">
-                        <a href="index.html"><img src="/static/img/logo/logo.png" alt=""></a>
+                        <a href="{{url_for('home.index')}}"><img src="/static/img/logo/logo.png" alt=""></a>
                     </div>
                     <div class="header_title">
                         
@@ -65,7 +65,7 @@
                             <li><input type="text" placeholder="종목명·초성·코드 검색" id='searchText' name="searchKeyword" />
                                 <i class="fa fa-search"></i></li>
                             <li class="active"><a href="index.html">홈</a></li>
-                            <li><a href="#">TOP 50</a></li>
+                            <li><a href="{{url_for('topfifty.list')}}">TOP 50</a></li>
                             <li><a href="#">게시판</a></li>
                             <li><a href="#">관심목록</a></li>
                             <li><a href="#">커뮤니티</a></li>

@@ -1,4 +1,4 @@
-.topten_title {
+.title {
     font-size: 20px;
     font-weight: bold;
 }
@@ -14,3 +14,13 @@
 .topten_area {
     padding-left: 186px;
 }
+
+.topten_table {
+    width: 600px;
+}
+
+.topten {
+    margin-top: 50px;
+    margin-left: 210px;
+}
+
