@@ -11,10 +11,10 @@ from jinja2 import Template
 abs_path = os.getcwd()
 # print("#################" + abs_path + "#################")
 
-with open(abs_path+'/app/settings/config.json', 'r') as f:
-    config = json.load(f)
-    db_info = config['DB']
-    api_info = config['NAVERAPI']
+#with open(abs_path+'/app/settings/config.json', 'r') as f:
+    #config = json.load(f)
+    #db_info = config['DB']
+    #api_info = config['NAVERAPI']
 
 
 cx_Oracle.init_oracle_client(lib_dir=r"C:\oracle\instantclient_21_7") # 설치한 Instant Client 경로
