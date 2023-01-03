@@ -11,10 +11,10 @@ from jinja2 import Template
 abs_path = os.getcwd()
 # print("#################" + abs_path + "#################")
 
-#with open(abs_path+'/app/settings/config.json', 'r') as f:
-    #config = json.load(f)
-    #db_info = config['DB']
-    #api_info = config['NAVERAPI']
+with open(abs_path+'/app/settings/config.json', 'r') as f:
+    config = json.load(f)
+    db_info = config['DB']
+    api_info = config['NAVERAPI']
 
 
 cx_Oracle.init_oracle_client(lib_dir=r"C:\oracle\instantclient_21_7") # 설치한 Instant Client 경로
@@ -27,14 +27,13 @@ connection = cx_Oracle.connect(user=db_info['username'], password=db_info['passw
 def create_app():
     
     app = Flask(__name__)
-    from app.home import home
+    from . import home
+    from . import topfifty
     
-    app.static_folder = "../static"
+    #app.static_folder = "../static"
     app.register_blueprint(home.blueprint)  #home.py에서 사용할 blueprint 객체를 blurprint로 설정
+    app.register_blueprint(topfifty.blueprint)
     
-    @app.route('/favicon.ico')
-    def favicon():
-        return app.send_static_file("/favicon.ico")
         # return send_from_directory(os.path.join(app.root_path, 'static'),'favicon.ico', mimetype='image/vnd.microsoft.icon')
     
     return app

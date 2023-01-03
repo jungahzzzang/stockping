@@ -3,19 +3,19 @@ from flask import Blueprint
 
 app = Flask(__name__)
 
-blueprint = Blueprint("home", __name__, url_prefix="/")
+blueprint = Blueprint("home", __name__, template_folder="templates", static_folder="static", url_prefix="/")
 
 @blueprint.route('/main', methods=['GET', 'POST'], endpoint='home')
 def index():
-    connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
-    cursor = connection.cursor()
-    sql = "SELECT * FROM TB_NEWS WHERE NEWS_NUM <=25" # 뉴스 데이터 SELECT
-    cursor.execute(sql)
-    news_items = cursor.fetchall()
+    #connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
+    #cursor = connection.cursor()
+    #sql = "SELECT * FROM TB_NEWS WHERE NEWS_NUM <=25" # 뉴스 데이터 SELECT
+    #cursor.execute(sql)
+    #news_items = cursor.fetchall()
     # print("++++++++++"+ str(news_items))
 
-    cursor.close()
-    connection.close()
+    #cursor.close()
+    #connection.close()
     
     # 지수 데이터 크롤링
     index_url = "https://finance.naver.com/sise/"

@@ -1,0 +1,33 @@
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+.topten_title_area {
+    display: inline-block;
+}
+
+.realtime_area {
+    display: inline-block;
+    margin-left: 115px;
+}
+
+.topten_area {
+    padding-left: 186px;
+}
+
+.topfifty_table {
+    width: 600px;
+}
+
+.topten {
+    margin-top: 50px;
+    margin-left: 210px;
+}
+
+.rise {
+    color: #D90400;
+}
+
+.decline { 
+    color: #005DDE;
+}
