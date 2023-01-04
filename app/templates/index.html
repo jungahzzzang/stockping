@@ -33,11 +33,25 @@
                             {% if top_stock %}
                             {% for i in top_stock %}
                               <tr>
+                                {% if "+" in i[4]%}
                                 <td>{{i[0]}}</td>
                                 <td>{{i[1]}}</td>
                                 <td>{{i[2]}}</td>
-                                <td>{{i[3]}}</td>
-                                <td>{{i[4]}}</td>
+                                <td class="rise">
+                                    <img src="/static/img/graph/ico_up.gif" alt="">
+                                    {{i[3]}}
+                                  </td>
+                                <td class="rise">{{i[4]}}</td>
+                                {% elif "-" in i[4] %}
+                                <td>{{i[0]}}</td>
+                                <td>{{i[1]}}</td>
+                                <td>{{i[2]}}</td>
+                                <td class="decline">
+                                  <img src="/static/img/graph/ico_down.gif" alt="">
+                                  {{i[3]}}
+                                </td>
+                                <td class="decline">{{i[4]}}</td>
+                                {% endif %}
                               </tr>
                           </tbody>
                           {% endfor %}

@@ -1,5 +1,8 @@
 from app import * # main에 선언된 모든 값을 가져온다.
 from flask import Blueprint
+import urllib.request
+import urllib.parse
+import requests
 
 app = Flask(__name__)
 

@@ -1,21 +1,15 @@
 from app import *
 from flask import Blueprint
+import urllib.request
+import urllib.parse
+import requests
 
 app = Flask(__name__)
 
-blueprint = Blueprint("home", __name__, template_folder="templates", static_folder="static", url_prefix="/")
+blueprint = Blueprint("home", __name__, url_prefix="/")
 
-@blueprint.route('/main', methods=['GET', 'POST'], endpoint='home')
+@blueprint.route('/main', methods=['GET', 'POST'])
 def index():
-    #connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
-    #cursor = connection.cursor()
-    #sql = "SELECT * FROM TB_NEWS WHERE NEWS_NUM <=25" # 뉴스 데이터 SELECT
-    #cursor.execute(sql)
-    #news_items = cursor.fetchall()
-    # print("++++++++++"+ str(news_items))
-
-    #cursor.close()
-    #connection.close()
     
     # 지수 데이터 크롤링
     index_url = "https://finance.naver.com/sise/"
@@ -82,4 +76,4 @@ def index():
             topten.append(data[i])
             topten[i][0] = str(i+1)
           
-    return render_template('index.html', news_items=news_items, real_time=real_time, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=topten)
+    return render_template('index.html', real_time=real_time, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=topten)
