@@ -1,12 +1,22 @@
 from app import *
 from flask import Blueprint
-import urllib.request
-import urllib.parse
-import requests
 
 app = Flask(__name__)
 
 blueprint = Blueprint("home", __name__, url_prefix="/")
+
+abs_path = os.getcwd()
+
+with open(abs_path+'/app/settings/config.json', 'r') as f:
+    config = json.load(f)
+    db_info = config['DB']
+    api_info = config['NAVERAPI']
+
+    mongo_connect = db_info['MONGO_URI'];
+    client = MongoClient(mongo_connect)
+    
+    db = client.db_info['db_name'];
+    collection = db.db_info['collection_name'];
 
 @blueprint.route('/main', methods=['GET', 'POST'])
 def index():

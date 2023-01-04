@@ -1,152 +1,91 @@
-import os
-import datetime
-import urllib.request
-import urllib.parse
 import json
-import cx_Oracle
-import re
+import os
+from pymongo import MongoClient
+from pymongo.errors import BulkWriteError
+import datetime
 import schedule
 import time
+import urllib.request
+import urllib.parse
+import requests
 
-with open('config.json', 'r') as f:
+abs_path = os.getcwd()
+
+with open(abs_path+'/app/settings/config.json', 'r') as f:
     config = json.load(f)
-db_info = config['DB']
-api_info = config['NAVERAPI']
+    db_info = config['DB']
+    api_info = config['NAVERAPI'];
 
-# CODE_1
-def get_request_url(url):
-    request = urllib.request.Request(url)
-    request.add_header("X-Naver-Client-Id",api_info['client_id'])
-    request.add_header("X-Naver-Client-Secret",api_info['client_secret'])
-    try:
-        response = urllib.request.urlopen(request) # 정보 추출
-        if response.getcode() == 200:              # OK(성공)
-            print("[%s] Url Response Success" % datetime.datetime.now())
-            response_body = response.read()
-            news_list = response_body.decode('utf-8')   # 추출한 정보가 담겨져 있음
-            print(news_list)
-            return news_list
-    except Exception as e:
-        print(e)
-        print("[%s] Error for URL : %s" % (datetime.datetime.now(), url))
-        return None
-    
-# CODE_2 [뉴스 수집]
-def getNaverSearchResult(sNode, search_text, page_start, display):
-    base = "https://openapi.naver.com/v1/search"
-    node = "/%s.json" % sNode
-
-    parameters = "?query=%s&start=%s&display=%s" % (urllib.parse.quote(search_text), page_start, display)
-
-    url = base + node + parameters
-
-    retData = get_request_url(url)
-
-    if(retData == None):
-        return None
-    else:
-        # print(retData)
-        return json.loads(str(retData)) # JSON 형식으로 리턴
-
-# CODE_3 [데이터 담기]
-def getNewsData(item, jsonResult):
-    title = item['title']
-    originallink = item['originallink']
-    link = item['link']
-    description = item['description']
-    pubDate = datetime.datetime.strptime(item['pubDate'], '%a, %d %b %Y %H:%M:%S +0900')
-    pubDate = pubDate.strftime('%Y-%m-%d %H:%M:%S')
-    title = title.replace("'", "")
-    description = description.replace("'", "")
-    
-    jsonResult.append({'title': title, 'description': description,
-                       'originallink': originallink, 'link': link,
-                       'pubDate': pubDate})
-
-# CODE_4 [오라클 연동]
-def save_oracle(jsonResult):
-    # Instant Client 경로 입력
-    LOCATION = r"C:\\oracle\\instantclient_21_7"
-    # 환경변수 등록
-    os.environ["PATH"] = LOCATION + ";" + os.environ["PATH"]
-    # 오라클 클라우드 DB 사용자 이름, 비밀번호, dsn 입력
-    connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
-    # 커서 생성
-    cursor = connection.cursor()
-    # DB 저장
-    sql = "insert into tb_news values (news_seq.nextval, :title, :originallink, :link, :description, :pubDate)"
-    for rec in jsonResult:
-        try:
-            cursor.execute(sql, rec)
-        except: # 데이터 중 encoding 오류 데이터는 제외하고 DB 저장
-            print(rec)
-            for reckey in rec:
-                rec[reckey] = re.sub('[^가-힝0-9a-zA-Z<>&.?:/#\[\]\\s]', ' ', rec[reckey]) # []에 없는 문자를 제거, ^~ :~를 제외한 나머지
-            cursor.execute(sql, rec)    # 수정된 데이터 DB 저장
-            print(rec)
-    connection.commit()
-
-def main():
-    jsonResult = []
-
-    sNode = 'news'
-    search_text = '주식'
-    display_count = 100
-
-    jsonSearch = getNaverSearchResult(sNode, search_text, 1, display_count)
-    print("jsonSearch = ", jsonSearch)
-
-    while((jsonSearch != None) and (jsonSearch['display'] != 0)):   # 추출한 데이터가 있을 때
-        for item in jsonSearch['items']:
-            print(item)
-            getNewsData(item, jsonResult)
-
-        nStart = jsonSearch['start'] + jsonSearch['display']
-        jsonSearch = getNaverSearchResult(sNode, search_text, nStart, display_count)
-
-    with open('%s naver_%s_DB.json' % (search_text, sNode), 'w', encoding='utf-8') as outfile:
-        retJson = json.dumps(jsonResult, indent=4, sort_keys=True, ensure_ascii=False)
-        outfile.write(retJson)
-
-    print('%s_naver_%s.json SAVED' % (search_text, sNode))
-
-    save_oracle(jsonResult)
-    
-def getNewsData():
-    dsn_info = cx_Oracle.makedsn('')
-    connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
-    cursor = connection.cursor()
-    sql = "insert into tb_news values (news_seq.nextval, :title, :originallink, :link, :description, :pubDate)" # 뉴스 데이터 INSERT
-    
-    for i in range(1, 101+1, 100):
-        encText = urllib.parse.quote("주식")
-        url = 'https://openapi.naver.com/v1/search/news.json?query='+encText # json 결과
-        request = urllib.request.Request(url.format(i))
-        request.add_header("X-Naver-Client-Id",api_info['client_id'])
-        request.add_header("X-Naver-Client-Secret",api_info['client_secret'])
+def main(*args):
+    keywords = args.get('keywords', ['경제', '주식'])
+    display_num = args.get('display_num', 50)
+    client_id = args.get('client_id')
+    client_secret = args.get('client_secret')
+     
+    docs = getNewsData(keywords, client_id, client_secret, display_num)
         
-        response = urllib.request.urlopen(request)
-        rescode = response.getcode()
-        if(rescode == 200):
-            response_body = response.read()
-            news_list = response_body.decode('utf-8')
-            print(news_list)
-            items = news_list['items']
-            for item in items:
+    result = save_mongo()
+
+    return result
+    
+def getNewsData(keywords, client_id, client_secret, display_num=50):
+    client_id = api_info['client_id']
+    client_secret = api_info['client_secret']
+    news_items = []
+    
+    for keyword in keywords:
+        url = "https://openapi.naver.com/v1/search/news.json"
+        sort = 'date'
+        start_num = 1
+        
+        params = {'display': display_num, 'start': start_num,
+                  'query': keyword.encode('utf-8'), 'sort': sort}
+        headers = {'X-Naver-Client-Id': client_id,
+                   'X-Naver-Client-Secret': client_secret, }
+        
+        r = requests.get(url, headers=headers, params=params)
+        
+        # request(요청)이 성공하면
+        if r.status_code == requests.codes.ok:
+            result_response = json.loads(r.content.decode('utf-8'))
+
+            result = result_response['items']
+            for item in result:
                 title = item['title']
                 originallink = item['originallink']
                 link = item['link']
                 description = item['description']
-                pubDate = item['pubDate']
+                pubDate = datetime.datetime.strptime(item['pubDate'], '%a, %d %b %Y %H:%M:%S +0900')
+                pubDate = pubDate.strftime('%Y-%m-%d %H:%M:%S')
                 title = title.replace("'", "")
                 description = description.replace("'", "")
-                print(description)
-                cursor.execute(sql.format(title, originallink, link, description, pubDate))
+        # request(요청)이 성공하지 않으면        
         else:
-            print("Error Code:"+rescode)
+            failed_msg = json.loads(r.content.decode('utf-8'))
+            print(failed_msg)
+            
+        news_items.extend(result)
+                
+    return news_items
+
+def save_mongo(docs):
+   
+    mongo_connect = db_info['MONGO_URI'];
+    client = MongoClient(mongo_connect)
     
-    cursor.close()
-    connection.close()
+    db = client.db_info['db_name'];
+    collection = db.db_info['collection_name'];
+    db_result = {'result': 'success'}
+    
+    #뉴스 link field에 unique key 설정 - unique하게 유일한 row 데이터만 입력됨.
+    collection.create_index([('link', 1)], unique=True)
+    
+    try:
+        collection.insert_many(docs, ordered=False)
+    except BulkWriteError as bwe:
+        db_result['result'] = "Insert and Ignore duplicated data"
+    
+    return db_result
 
 def job():
     print('working.....')

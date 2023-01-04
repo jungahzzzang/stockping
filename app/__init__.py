@@ -1,11 +1,12 @@
 from flask import Flask, render_template, send_from_directory
 import json
-import urllib.request
-import urllib.parse
 from pymongo import MongoClient
 import os
 from bs4 import BeautifulSoup as bs
+import urllib.request
+import urllib.parse
 import requests
+
 
 abs_path = os.getcwd()
 
@@ -14,8 +15,8 @@ with open(abs_path+'/app/settings/config.json', 'r') as f:
     db_info = config['DB']
     api_info = config['NAVERAPI']
 
-mongo_connect = db_info['MONGO_URI'];
-client = MongoClient(mongo_connect)
+    mongo_connect = db_info['MONGO_URI'];
+    client = MongoClient(mongo_connect)
 
 #__init__.py 파일에선 app 객체를 선언하고 각종 모듈, 데이터베이스, 블루프린트 값을 설정한다.
 # 플라스크 프레임워크에서 지정한 함수 이름
