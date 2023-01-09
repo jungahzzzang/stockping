@@ -1,91 +1,333 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'layout.html' %}
+{% block head %}
+    <style>
+    </style>
+{% endblock %}
 
-  <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>Cyborg - Awesome HTML5 Template</title>
-    <!-- Bootstrap core CSS -->
-    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="/static/css/fontawesome.css">
-    <link rel="stylesheet" href="/static/css/templatemo-cyborg-gaming.css">
-    <link rel="stylesheet" href="/static/css/owl.css">
-    <link rel="stylesheet" href="/static/css/animate.css">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-<!--
-
-TemplateMo 579 Cyborg Gaming
-
-https://templatemo.com/tm-579-cyborg-gaming
-
--->
-  </head>
-
-<body>
-  <!-- sidebar include -->
-  {% extends 'layout.html' %}
-  {% block header %}
-
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="page-content">
-
-          <!-- ***** Most Popular Start ***** -->
-          <div class="most-popular">
-            <div class="col-xl-8 col-lg-7">
-              <div class="row">
-                  <div class="heading-section">
-                    <h4><em>비상장 시가총액</em> TOP 10</h4>
-                  </div>
+{% block content %}
+    <!-- Categories Section Begin -->
+    <section class="categories">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <div class="topten categories__item categories__large__item">
+                    <div class="categories__text">
+                        <div class="topten_title_area">
+                            <span class="title">TOP 10 종목</span>
+                        </div>
+                        <div class="realtime_area">
+                            <span class="badge badge-danger">실시간</span>
+                            <span>{{real_time}}</span>
+                        </div>
+                        <table class="topten_table table align-items-center">
+                          <thead class="thead-light">
+                            <tr>
+                              <th>NO</th>
+                              <th>종목명</th>
+                              <th>현재가</th>
+                              <th>전일비</th>
+                              <th>등락률</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% if top_stock %}
+                            {% for i in top_stock %}
+                              <tr>
+                                {% if "+" in i[4]%}
+                                <td>{{i[0]}}</td>
+                                <td>{{i[1]}}</td>
+                                <td>{{i[2]}}</td>
+                                <td class="rise">
+                                    <img src="/static/img/graph/ico_up.gif" alt="">
+                                    {{i[3]}}
+                                  </td>
+                                <td class="rise">{{i[4]}}</td>
+                                {% elif "-" in i[4] %}
+                                <td>{{i[0]}}</td>
+                                <td>{{i[1]}}</td>
+                                <td>{{i[2]}}</td>
+                                <td class="decline">
+                                  <img src="/static/img/graph/ico_down.gif" alt="">
+                                  {{i[3]}}
+                                </td>
+                                <td class="decline">{{i[4]}}</td>
+                                {% endif %}
+                              </tr>
+                          </tbody>
+                          {% endfor %}
+                          {% else %}
+                          <tbody>
+                            <tr>
+                                <td>데이터가 존재하지 않습니다.</td>
+                            </tr>
+                          </tbody>
+                          {% endif %}
+                        </table>
+                    </div>
+                </div>
               </div>
-            </div>
-            <div class="col-xl-4 col-lg-5">
-              <!--<div class="gaming-library">-->
-              <div class="heading-section">
-                <h4><em>오늘의</em>주식뉴스</h4>
-              </div>
-              {% if news_items %}
-              {% for i in news_items %}
-              <div class="item">
-                <a class="font-weight-bold" href="{{i[2]}}">
-                  <div class="text-truncate message-title">{{i[1]}}</div>
-                </a>
-              </div>
-              {% endfor %}
-              {% else %}
-              <div class="item">
-                  <div class="text-truncate message-title">데이터가 존재하지 않습니다.</div>
-              </div>
-              {% endif %}
+              <div class="col-lg-4 col-md-4">
+                <div class="blog__sidebar">
+                    <div class="blog__sidebar__item">
+                        <div class="section-title">
+                            <h4>Feature posts</h4>
+                        </div>
+                        <a href="#" class="blog__feature__item">
+                            <div class="blog__feature__item__pic">
+                                <img src="img/blog/sidebar/fp-1.jpg" alt="">
+                            </div>
+                            <div class="blog__feature__item__text">
+                                <h6>Amf Cannes Red Carpet Celebrities Kend...</h6>
+                                <span>Seb 17, 2019</span>
+                            </div>
+                        </a>
+                        <a href="#" class="blog__feature__item">
+                            <div class="blog__feature__item__pic">
+                                <img src="img/blog/sidebar/fp-2.jpg" alt="">
+                            </div>
+                            <div class="blog__feature__item__text">
+                                <h6>Amf Cannes Red Carpet Celebrities Kend...</h6>
+                                <span>Seb 17, 2019</span>
+                            </div>
+                        </a>
+                        <a href="#" class="blog__feature__item">
+                            <div class="blog__feature__item__pic">
+                                <img src="img/blog/sidebar/fp-3.jpg" alt="">
+                            </div>
+                            <div class="blog__feature__item__text">
+                                <h6>Amf Cannes Red Carpet Celebrities Kend...</h6>
+                                <span>Seb 17, 2019</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <div class="section-title">
+                            <h4>Tags cloud</h4>
+                        </div>
+                        <div class="blog__sidebar__tags">
+                            <a href="#">Fashion</a>
+                            <a href="#">Street style</a>
+                            <a href="#">Diversity</a>
+                            <a href="#">Beauty</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
-      </div>
     </div>
-  </div>
-  
- <!-- Footer -->
- {% block footer %} 
- {% endblock %}
- {% endblock %}
+</section>
+<!-- Categories Section End -->
 
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>인기글</h4>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8">
+                <ul class="filter__controls">
+                    <li class="active" data-filter="*">All</li>
+                    <li data-filter=".women">Women’s</li>
+                    <li data-filter=".men">Men’s</li>
+                    <li data-filter=".kid">Kid’s</li>
+                    <li data-filter=".accessories">Accessories</li>
+                    <li data-filter=".cosmetic">Cosmetics</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
 
-  <!-- Scripts -->
-  <!-- Bootstrap core JavaScript -->
-  <script src="/static/vendor/jquery/jquery.min.js"></script>
-  <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!-- Trend Section Begin -->
+<!--<section class="trend spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="trend__content">
+                    <div class="section-title">
+                        <h4>Hot Trend</h4>
+                    </div>
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="/static/img/trend/ht-1.jpg" alt="">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>Chain bucket bag</h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
+                    </div>
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="/static/img/trend/ht-2.jpg" alt="">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>Pendant earrings</h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
+                    </div>
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="/static/img/trend/ht-3.jpg" alt="">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>Cotton T-Shirt</h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="trend__content">
+                    <div class="section-title">
+                        <h4>Best seller</h4>
+                    </div>
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="/static/img/trend/bs-1.jpg" alt="">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>Cotton T-Shirt</h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
+                    </div>
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="/static/img/trend/bs-2.jpg" alt="">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>Zip-pockets pebbled tote <br />briefcase</h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
+                    </div>
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="/static/img/trend/bs-3.jpg" alt="">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>Round leather bag</h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="trend__content">
+                    <div class="section-title">
+                        <h4>Feature</h4>
+                    </div>
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="/static/img/trend/f-1.jpg" alt="">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>Bow wrap skirt</h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
+                    </div>
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="/static/img/trend/f-2.jpg" alt="">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>Metallic earrings</h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
+                    </div>
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="/static/img/trend/f-3.jpg" alt="">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>Flap cross-body bag</h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+<!-- Trend Section End -->
+{% endblock %}
 
-  <script src="/static/js/isotope.min.js"></script>
-  <script src="/static/js/owl-carousel.js"></script>
-  <script src="/static/js/tabs.js"></script>
-  <script src="/static/js/popup.js"></script>
-  <script src="/static/js/custom.js"></script>
+{% block footer %}
+   
+{% endblock %}
 
-
-  </body>
-
-</html>
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->

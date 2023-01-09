@@ -3,11 +3,9 @@ import os
 from pymongo import MongoClient
 from pymongo.errors import BulkWriteError
 import datetime
+import requests
 import schedule
 import time
-import urllib.request
-import urllib.parse
-import requests
 
 abs_path = os.getcwd()
 
@@ -58,7 +56,7 @@ def get_news(keywords, client_id, client_secret):
 
     return news_items
 
-def save_to_db(my_ip, username, password, db_name, collection_name, docs):
+def save_to_db(db_name, collection_name, docs):
     db_result = {'result':"success"}
     
     #몽고디비 연결   
@@ -76,15 +74,24 @@ def save_to_db(my_ip, username, password, db_name, collection_name, docs):
         db_result["result"] = "insert and ignore duplictated data"
 
     return db_result
-        
+    
 client_id = api_info['CLIENT_ID']
 client_secret = api_info['CLIENT_SECRET']
 keywords = ["경제", "주식"]
-docs = get_news(keywords, client_id, client_secret)
 
 host='127.0.0.1'
 username = db_info['username']
 password = db_info['password']
 db_name = db_info['db_name']
 collection_name = db_info['collection_name']
+docs = get_news(keywords, client_id, client_secret)
 result = save_to_db(host, username, password, db_name, collection_name, docs)
+
+print("I'm working...");
+schedule.every().day.at("10:30").do(get_news);   #매일 10:30 실행
+schedule.every().day.at("10:30").do(save_to_db);   #매일 10:30 실행
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+        

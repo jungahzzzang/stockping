@@ -1,5 +1,6 @@
 from app import *
-from flask import Blueprint
+from flask import Blueprint, jsonify
+from bson.json_util import dumps
 
 app = Flask(__name__)
 
@@ -12,11 +13,8 @@ with open(abs_path+'/app/settings/config.json', 'r') as f:
     db_info = config['DB']
     api_info = config['NAVERAPI']
 
-    mongo_connect = db_info['MONGO_URI'];
-    client = MongoClient(mongo_connect)
-    
-    db = client.db_info['db_name'];
-    collection = db.db_info['collection_name'];
+    db_name = db_info['db_name']
+    collection_name = db_info['collection_name']
 
 @blueprint.route('/main', methods=['GET', 'POST'])
 def index():
@@ -85,5 +83,20 @@ def index():
         if i < 10:
             topten.append(data[i])
             topten[i][0] = str(i+1)
-          
+            
     return render_template('index.html', real_time=real_time, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=topten)
+
+@blueprint.route('/api/news')
+def send_news():
+    
+    client = MongoClient(db_info['MONGO_URI'])   
+    db = client[db_name]
+    collection = db[collection_name] 
+    data = list(collection.find({}).sort("pubDate",-1).limit(10)); # 최근 10개
+    news_data = []
+    for _data in data:
+        if _data not in news_data:
+            _data['_id'] = str(_data['_id'])
+            news_data.append(_data)
+    
+    return jsonify({"news":news_data})
