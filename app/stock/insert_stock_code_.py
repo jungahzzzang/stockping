@@ -1,8 +1,8 @@
 import pandas as pd
-import cx_Oracle
 import json
 
 
+# 종목 코드 정렬
 def getStockCode():
     url = 'https://kind.krx.co.kr/corpgeneral/corpList.do'
 
@@ -28,35 +28,29 @@ def getStockCode():
 
 def cursorLoad():
     
-    with open('../../settings/config.json', 'r') as f: #Instant Client 접속을 위한 전자지갑속 오라클 클라우드DB 정보(tnsnames.ora 파일)
+    with open('../settings/config.json', 'r') as f: #몽고DB 정보(tnsnames.ora 파일)
         config = json.load(f)
     db_info = config['DB']
 
-    cx_Oracle.init_oracle_client(lib_dir=r"C:\instantclient_19_16") # 설치한 Instant Client 경로
-    connection = cx_Oracle.connect(user=db_info['username'], password=db_info['password'], dsn=db_info['dsn'])
-    cursor = connection.cursor()
 
     kospi, kosdaq = getStockCode()
 
-    for i in range(0,len(kospi),1):
-        try:
-            sql = f"INSERT INTO ADMIN.TB_STOCK_INFO (IDX, STOCK_CODE, STOCK_NAME) VALUES(STOCK_SEQ.NEXTVAL, '{kospi['종목코드'][i]}', '{kospi['회사명'][i]}')"
-            cursor.execute(sql)
-            connection.commit()
+    ### 몽고 DB에 맞게 쿼리문을 수정해야함.
+    # for i in range(0,len(kospi),1):
+    #     try:
+    #         sql = f"INSERT INTO ADMIN.TB_STOCK_INFO (IDX, STOCK_CODE, STOCK_NAME) VALUES(STOCK_SEQ.NEXTVAL, '{kospi['종목코드'][i]}', '{kospi['회사명'][i]}')"
 
-        except:
-            print(i," 번째 오류, 다시시도")
-            i = i-1
+    #     except:
+    #         print(i," 번째 오류, 다시시도")
+    #         i = i-1
 
-    for j in range(0,len(kosdaq),1):
-        try:
-            sql = f"INSERT INTO ADMIN.TB_STOCK_INFO (IDX, STOCK_CODE, STOCK_NAME) VALUES(STOCK_SEQ.NEXTVAL, '{kosdaq['종목코드'][j]}', '{kosdaq['회사명'][j]}')"
-            cursor.execute(sql)
-            connection.commit()
+    # for j in range(0,len(kosdaq),1):
+    #     try:
+    #         sql = f"INSERT INTO ADMIN.TB_STOCK_INFO (IDX, STOCK_CODE, STOCK_NAME) VALUES(STOCK_SEQ.NEXTVAL, '{kosdaq['종목코드'][j]}', '{kosdaq['회사명'][j]}')"
 
-        except:
-            print(j," 번째 오류, 다시시도")
-            j = j-1
+    #     except:
+    #         print(j," 번째 오류, 다시시도")
+    #         j = j-1
 
 
     # sql = "SELECT STOCK_CODE, STOCK_NAME, STOCK_IDX FROM ADMIN.TB_STOCK_INFO"
