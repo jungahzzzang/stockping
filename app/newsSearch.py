@@ -83,7 +83,7 @@ host='127.0.0.1'
 username = db_info['username']
 password = db_info['password']
 db_name = db_info['db_name']
-collection_name = db_info['collection_name']
+collection_name = db_info['news_collection']
 docs = get_news(keywords, client_id, client_secret)
 result = save_to_db(host, username, password, db_name, collection_name, docs)
 

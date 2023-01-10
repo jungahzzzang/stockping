@@ -14,7 +14,7 @@ with open(abs_path+'/app/settings/config.json', 'r') as f:
     api_info = config['NAVERAPI']
 
     db_name = db_info['db_name']
-    collection_name = db_info['collection_name']
+    collection_name = db_info['news_collection']
 
 @blueprint.route('/main', methods=['GET', 'POST'])
 def index():
