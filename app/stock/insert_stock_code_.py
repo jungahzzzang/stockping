@@ -60,7 +60,7 @@ def cursorLoad():
     
 
 cursorLoad()
-print("done")
+# print("loding done")
 
 
 
