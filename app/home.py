@@ -40,8 +40,19 @@ def index():
     target_res = requests.get(target_url)
     target_soup = bs(target_res.text, 'html.parser')
     data_rows = target_soup.find("table", attrs={"class":"type_2"}).find("tbody").find_all("tr")
+    data_index = target_soup.find("table", attrs={"class":"type_2"}).find("tbody").select("tr>td>a")
    
+
+
    
+    # Q1: stock_code 50개가 각각 2개씩 총 100개 출력됩니다. 혹시 이유를 아실까요?
+    stock_code_list = []
+    for index in data_index:
+        href = index.attrs['href']
+        stockcode = href[-6:]
+        # print(stockcode)
+        stock_code_list.append(stockcode) 
+
     data = []
     for row in data_rows:
         # 각 row마다 td를 가지고옴
@@ -54,9 +65,16 @@ def index():
             origin = column.get_text().strip()
             top_stock.append(origin)
             
+
         del top_stock[5:]
         data.append(top_stock)
+    
 
+    # Q1에 대해 일단 추가해두었습니다.
+    print(len(top_stock))
+    for i in range(len(data)):
+        data[i].append(stock_code_list[i*2])
+    
     topten = gt.get_topten(data)
 
          
