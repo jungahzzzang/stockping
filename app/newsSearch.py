@@ -1,3 +1,4 @@
+from app import *
 import json
 import os
 from pymongo import MongoClient
@@ -6,6 +7,10 @@ import datetime
 import requests
 import schedule
 import time
+from flask import Blueprint, jsonify
+
+app = Flask(__name__)
+blueprint = Blueprint("home", __name__, url_prefix="/")
 
 abs_path = os.getcwd()
 
@@ -74,6 +79,22 @@ def save_to_db(db_name, collection_name, docs):
         db_result["result"] = "insert and ignore duplictated data"
 
     return db_result
+
+
+@blueprint.route('/api/news')
+def send_news():
+
+    client = MongoClient(db_info['MONGO_URI'])   
+    db = client[db_name]
+    collection = db[collection_name] 
+    data = list(collection.find({}).sort("pubDate",-1).limit(10)); # 최근 10개
+    news_data = []
+    for _data in data:
+        if _data not in news_data:
+            _data['_id'] = str(_data['_id'])
+            news_data.append(_data)
+
+    return jsonify({"news":news_data})
     
 client_id = api_info['CLIENT_ID']
 client_secret = api_info['CLIENT_SECRET']

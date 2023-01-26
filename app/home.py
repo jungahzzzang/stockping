@@ -1,8 +1,7 @@
 #run.py 기준 경로
 from app import *
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from app.stock import getTopTen as gt
-
 
 app = Flask(__name__)
 blueprint = Blueprint("home", __name__, url_prefix="/")
@@ -42,9 +41,6 @@ def index():
     data_rows = target_soup.find("table", attrs={"class":"type_2"}).find("tbody").find_all("tr")
     data_index = target_soup.find("table", attrs={"class":"type_2"}).find("tbody").select("tr>td>a")
    
-
-
-   
     # Q1: stock_code 50개가 각각 2개씩 총 100개 출력됩니다. 혹시 이유를 아실까요?
     stock_code_list = []
     for index in data_index:
@@ -80,9 +76,20 @@ def index():
          
     return render_template('index.html', real_time=real_time, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=topten)
 
+@blueprint.route('/api/news')
+def send_news():
 
+    client = MongoClient(db_info['MONGO_URI'])   
+    db = client[db_name]
+    collection = db[collection_name] 
+    data = list(collection.find({}).sort("pubDate",-1).limit(10)); # 최근 10개
+    news_data = []
+    for _data in data:
+        if _data not in news_data:
+            _data['_id'] = str(_data['_id'])
+            news_data.append(_data)
 
+    return jsonify({"news":news_data})
 
-# @app.route('/')
-# def gotomain():
-#    return render_template('/main')
+db_name = db_info['db_name']
+collection_name = db_info['news_collection']

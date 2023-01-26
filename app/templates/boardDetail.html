@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% block head %}
+    <style>
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="board-container">
+        <table>
+            <tr>
+                <td>제목</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>파일첨부</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td><div id="summernote"></div></td>
+            </tr>
+        </table>
+    </div>
+<!-- Categories Section End -->
+
+
+{% endblock %}
+
+{% block footer %}
+
+<script type="text/javascript">
+    $('#summernote').summernote({
+        height: 300,                 // 에디터 높이
+        minHeight: null,             // 최소 높이
+        maxHeight: null,             // 최대 높이
+        focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+        lang: "ko-KR",					// 한글 설정
+        placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+        
+    });
+  </script>
+   
+{% endblock %}
+

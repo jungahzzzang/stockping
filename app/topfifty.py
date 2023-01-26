@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 blueprint = Blueprint("topfifty", __name__, template_folder="templates", static_folder="static", url_prefix="/")
 
-@blueprint.route('/topfifty', methods=['GET'])
+@blueprint.route('/topfifty/list', methods=['GET'])
 def index():
        
 # 거래 순위 데이터 크롤링
@@ -38,4 +38,4 @@ def index():
       number = number +1
    print(data)
           
-   return render_template('toplist.html', top_stock=data)
+   return render_template('topList.html', top_stock=data)

@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% block head %}
+    <style>
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="board-container">
+        <div class="topten_title_area">
+            <span class="title">스톡핑 게시판</span>
+            <a href="{{url_for('board.write')}}">
+                <button type="button" class="btn btn-primary">글쓰기</button>
+            </a>
+        </div>
+        <table class="table align-items-center">
+            <thead class="thead-light">
+            <tr>
+                <th>NO</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>날짜</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<!-- Categories Section End -->
+
+
+{% endblock %}
+
+{% block footer %}
+   
+{% endblock %}
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
