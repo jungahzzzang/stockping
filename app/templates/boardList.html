@@ -5,14 +5,15 @@
 {% endblock %}
 
 {% block content %}
-    <div class="board-container">
+
+    <div class="container-fluid">
         <div class="topten_title_area">
             <span class="title">스톡핑 게시판</span>
             <a href="{{url_for('board.write')}}">
                 <button type="button" class="btn btn-primary">글쓰기</button>
             </a>
         </div>
-        <table class="table align-items-center">
+        <table class="board_table table align-items-center">
             <thead class="thead-light">
             <tr>
                 <th>NO</th>
@@ -33,8 +34,6 @@
             </tbody>
         </table>
     </div>
-<!-- Categories Section End -->
-
 
 {% endblock %}
 

@@ -3,6 +3,15 @@
     font-weight: bold;
 }
 
+.sub_title {
+	font-size: 13px;
+	background-color: #FFEF99;
+}
+
+.icon {
+	margin-right: 10px;
+}
+
 .topten_title_area {
     display: inline-block;
 }

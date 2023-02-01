@@ -4,3 +4,9 @@
     margin-right: auto;
     margin-left: auto;
 }
+
+.board_table {
+    width: 85% !important;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -2,8 +2,10 @@
     font-size: 20px;
     font-weight: bold;
 }
-.topten_title_area {
+.topfifty_title_area {
     display: inline-block;
+    margin-left: 150px;
+
 }
 
 .realtime_area {
@@ -16,7 +18,9 @@
 }
 
 .topfifty_table {
-    width: 600px;
+    width: 85% !important;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .topten {
@@ -30,4 +34,48 @@
 
 .decline { 
     color: #005DDE;
+}
+
+.search_opt {
+    list-style-type: none;
+    margin: 0;
+    margin-left: 140px;
+    padding: 0;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.search_opt::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.tab-button {
+    display: block;
+    padding: 10px -1px 10px 20px;
+    float: left;
+    margin-right: -1px;
+    margin-bottom: -1px;
+    color: gray;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.active {
+    border-top: 2px solid orange;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid white;
+    border-left: 1px solid #ccc;
+    color: black;
+    margin-top: -2px;
+}
+
+.tab-content {
+    display: none;
+    padding: 10px;
+}
+
+.show {
+    display: block;
 }
