@@ -10,3 +10,10 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+#writeBtn {
+    background: #922b3a;
+    border: 1px solid #922b3a;
+    font-family: "IBM Plex Sans KR";
+    margin-left: 1660px;
+}

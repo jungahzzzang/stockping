@@ -5,6 +5,7 @@
 .topfifty_title_area {
     display: inline-block;
     margin-left: 150px;
+    margin-top: 20px;
 
 }
 
@@ -60,15 +61,6 @@
     color: gray;
     text-decoration: none;
     cursor: pointer;
-}
-
-.active {
-    border-top: 2px solid orange;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid white;
-    border-left: 1px solid #ccc;
-    color: black;
-    margin-top: -2px;
 }
 
 .tab-content {

@@ -1,6 +1,11 @@
 {% extends 'layout.html' %}
 {% block head %}
     <style>
+      .btn .active {
+        color: '#fff',
+        font-weight: bold,
+        background: red
+      }
     </style>
 {% endblock %}
 
@@ -8,18 +13,19 @@
     
   <div class="container-fluid">
     <div class="topfifty_title_area">
-      <span class="title"><i class="fa-solid fa-arrow-trend-up icon"></i>TOP 50 종목</span>
+      <span class="title"><i class="fa-solid fa-arrow-trend-up icon"></i>TOP 종목</span>
     </div>
     <div class="topfifty_area">
         <div class="search_opt">
           <ul>
-            <li class="tab-button"><button type="button" class="btn btn-outline-danger">거래 상위</button></li>
-            <li class="tab-button"><button type="button" class="btn btn-outline-danger">상승</button></li>
-            <li class="tab-button"><button type="button" class="btn btn-outline-danger">하락</button></li>
-            <li class="tab-button"><button type="button" class="btn btn-outline-danger">시가 총액</button></li>
+            <li class="tab-button"><button type="button" id="market_sum_btn" class="btn btn-outline-danger active">시가 총액<i class='fa-solid fa-check chkIcon' id='chkIcon' style="display: ''"></i></button></li>
+            <li class="tab-button"><button type="button" id="quant_btn" class="btn btn-outline-danger" >거래 상위<i class='fa-solid fa-check chkIcon' id='chkIcon' style="display: none;"></i></button></li>
+            <li class="tab-button"><button type="button" id="rise_btn" class="btn btn-outline-danger">상승<i class='fa-solid fa-check chkIcon' id='chkIcon' style="display: none;"></i></button></li>
+            <li class="tab-button"><button type="button" id="fall_btn" class="btn btn-outline-danger">하락<i class='fa-solid fa-check chkIcon' id='chkIcon' style="display: none;"></i></button></li>
           </ul>
         </div>
-        <table class="topfifty_table table align-items-center">
+        <!-- 시가총액 -->
+        <table class="topfifty_table table align-items-center" id="market_sum">
           <thead class="thead-light">
             <tr>
               <th>NO</th>
@@ -63,6 +69,141 @@
           </tbody>
           {% endif %}
         </table>
+        <!-- 거래상위 -->
+        <table class="topfifty_table table align-items-center" id="quant" style="display: none;">
+          <thead class="thead-light">
+            <tr>
+              <th>NO</th>
+              <th>종목명</th>
+              <th>현재가</th>
+              <th>전일비</th>
+              <th>등락률</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if quant %}
+            {% for i in quant %}
+              <tr>
+                {% if "+" in i[4]%}
+                <td>{{i[0]}}</td>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td class="rise">
+                  <img src="/static/img/graph/ico_up.gif" alt="">
+                  {{i[3]}}
+                </td>
+                <td class="rise">{{i[4]}}</td>
+                {% elif "-" in i[4] %}
+                <td>{{i[0]}}</td>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td class="decline">
+                  <img src="/static/img/graph/ico_down.gif" alt="">
+                  {{i[3]}}
+                </td>
+                <td class="decline">{{i[4]}}</td>
+                {% endif %}
+              </tr>
+          </tbody>
+          {% endfor %}
+          {% else %}
+          <tbody>
+            <tr>
+                <td>데이터가 존재하지 않습니다.</td>
+            </tr>
+          </tbody>
+          {% endif %}
+        </table>
+        <!--  상승 -->
+        <table class="topfifty_table table align-items-center" id="rise" style="display: none;">
+          <thead class="thead-light">
+            <tr>
+              <th>NO</th>
+              <th>종목명</th>
+              <th>현재가</th>
+              <th>전일비</th>
+              <th>등락률</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if rise %}
+            {% for i in rise %}
+              <tr>
+                {% if "+" in i[4]%}
+                <td>{{i[0]}}</td>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td class="rise">
+                  <img src="/static/img/graph/ico_up.gif" alt="">
+                  {{i[3]}}
+                </td>
+                <td class="rise">{{i[4]}}</td>
+                {% elif "-" in i[4] %}
+                <td>{{i[0]}}</td>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td class="decline">
+                  <img src="/static/img/graph/ico_down.gif" alt="">
+                  {{i[3]}}
+                </td>
+                <td class="decline">{{i[4]}}</td>
+                {% endif %}
+              </tr>
+          </tbody>
+          {% endfor %}
+          {% else %}
+          <tbody>
+            <tr>
+                <td>데이터가 존재하지 않습니다.</td>
+            </tr>
+          </tbody>
+          {% endif %}
+        </table>
+        <!-- 하락 -->
+        <table class="topfifty_table table align-items-center" id="fall" style="display: none;">
+          <thead class="thead-light">
+            <tr>
+              <th>NO</th>
+              <th>종목명</th>
+              <th>현재가</th>
+              <th>전일비</th>
+              <th>등락률</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if fall %}
+            {% for i in fall %}
+              <tr>
+                {% if "+" in i[4]%}
+                <td>{{i[0]}}</td>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td class="rise">
+                  <img src="/static/img/graph/ico_up.gif" alt="">
+                  {{i[3]}}
+                </td>
+                <td class="rise">{{i[4]}}</td>
+                {% elif "-" in i[4] %}
+                <td>{{i[0]}}</td>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td class="decline">
+                  <img src="/static/img/graph/ico_down.gif" alt="">
+                  {{i[3]}}
+                </td>
+                <td class="decline">{{i[4]}}</td>
+                {% endif %}
+              </tr>
+          </tbody>
+          {% endfor %}
+          {% else %}
+          <tbody>
+            <tr>
+                <td>데이터가 존재하지 않습니다.</td>
+            </tr>
+          </tbody>
+          {% endif %}
+        </table>
     </div>
 </div>
 
@@ -70,15 +211,57 @@
 {% endblock %}
 
 {% block footer %}
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $(".btn").on('click', function(e){
+
+      if($(this).hasClass('active')) {
+        $('.btn').removeClass('active');
+        
+      }else {
+        $('.btn').removeClass('active');
+        $('.btn').children('#chkIcon').hide();
+
+        $(this).addClass('active');
+
+        if($(this).children('#chkIcon').css('display') == 'none') {
+          $(this).children('#chkIcon').show();
+        }
+        
+      }
+
+      if(e.target.id == 'market_sum_btn'){
+        $("#market_sum").show();
+        $("#quant").hide();
+        $("#rise").hide();
+        $("#fall").hide();
+  
+      }else if(e.target.id == 'quant_btn'){
+        $("#market_sum").hide();
+        $("#quant").show();
+        $("#rise").hide();
+        $("#fall").hide();
+        
+      }else if(e.target.id == 'rise_btn'){
+        $("#market_sum").hide();
+        $("#quant").hide();
+        $("#rise").show();
+        $("#fall").hide();
+        
+      }else if(e.target.id == 'fall_btn'){
+        $("#market_sum").hide();
+        $("#quant").hide();
+        $("#rise").hide();
+        $("#fall").show();
+        
+      }
+
+    });
+
+  });
+</script>
    
 {% endblock %}
 
-<!-- Search Begin -->
-<div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
-        </form>
-    </div>
-</div>

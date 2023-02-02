@@ -8,15 +8,70 @@ blueprint = Blueprint("topfifty", __name__, template_folder="templates", static_
 @blueprint.route('/topfifty/list', methods=['GET'])
 def index():
        
+# 시가 총액 순위 데이터 크롤링
+   target_url1 = 'https://finance.naver.com/sise/sise_market_sum.naver'
+   target_res1 = requests.get(target_url1)
+   target_soup1 = bs(target_res1.text, 'html.parser')
+   data_rows1 = target_soup1.find("table", attrs={"class":"type_2"}).find("tbody").find_all("tr")
 
+   market_sum = []
+   for row in data_rows1:
+      # 각 row마다 td를 가지고옴
+      columns = row.find_all("td")
+      # td가 1개인 것(데이터 없는 것)은 skip
+      if len(columns)<=1:
+         continue
+      # data = []
+      _market_sum = []
+      for column in columns:
+         origin = column.get_text().strip()
+         _market_sum.append(origin)
+         
+      del _market_sum[5:]
+      market_sum.append(_market_sum)
+      ##print(top_stock)
       
+   number = 0
+   for i in market_sum: # % 삭제
+      market_sum[number][4] = (i[4][:-1])
+      number = number +1
+	  
+# 거래 상위 순위 데이터 크롤링
+   target_url2 = 'https://finance.naver.com/sise/sise_quant.naver'
+   target_res2 = requests.get(target_url2)
+   target_soup2 = bs(target_res2.text, 'html.parser')
+   data_rows2 = target_soup2.find("table", attrs={"class":"type_2"}).find_all("tr")
 
+   quant = []
+   for row in data_rows2:
+      # 각 row마다 td를 가지고옴
+      columns = row.find_all("td")
+      #idx = row.find(name='td',attrs=({"class": "no"})).text()
+      #print("+++++++"+idx)
+
+      #if int(idx) < 51:
+      # td가 1개인 것(데이터 없는 것)은 skip
+      if len(columns)<=1:
+         continue
+      # data = []
+      _quant = []
+      for column in columns:
+         origin = column.get_text().strip()
+         _quant.append(origin)
+         
+      del _quant[5:]
+      quant.append(_quant)
    
+   number = 0
+   for i in quant: # % 삭제
+      quant[number][4] = (i[4][:-1])
+      number = number +1
+      
 # 상승 순위 데이터 크롤링
    target_url3 = 'https://finance.naver.com/sise/sise_rise.naver'
    target_res3 = requests.get(target_url3)
    target_soup3 = bs(target_res3.text, 'html.parser')
-   data_rows3 = target_soup3.find("table", attrs={"class":"type_2"}).find("tbody").find_all("tr")
+   data_rows3 = target_soup3.find("table", attrs={"class":"type_2"}).find_all("tr")
 
 
    rise = []
@@ -45,7 +100,7 @@ def index():
    target_url4 = 'https://finance.naver.com/sise/sise_fall.naver'
    target_res4 = requests.get(target_url4)
    target_soup4 = bs(target_res4.text, 'html.parser')
-   data_rows4 = target_soup4.find("table", attrs={"class":"type_2"}).find("tbody").find_all("tr")
+   data_rows4 = target_soup4.find("table", attrs={"class":"type_2"}).find_all("tr")
 
 
    fall = []
@@ -70,5 +125,4 @@ def index():
       fall[number][4] = (i[4][:-1])
       number = number +1
       
-   return render_template('topList.html', market_sum=market_sum)
-   #return render_template('topList.html', market_sum=market_sum, quant=quant, rise=rise, fall=fall)
+   return render_template('topList.html', market_sum=market_sum, quant=quant, rise=rise, fall=fall)

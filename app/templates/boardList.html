@@ -7,11 +7,8 @@
 {% block content %}
 
     <div class="container-fluid">
-        <div class="topten_title_area">
-            <span class="title">스톡핑 게시판</span>
-            <a href="{{url_for('board.write')}}">
-                <button type="button" class="btn btn-primary">글쓰기</button>
-            </a>
+        <div class="topfifty_title_area">
+            <span class="title"><i class="fa-solid fa-quote-right icon"></i>스톡핑 게시판 글목록</span>
         </div>
         <table class="board_table table align-items-center">
             <thead class="thead-light">
@@ -33,6 +30,9 @@
                 </tr>
             </tbody>
         </table>
+        <a href="{{url_for('board.write')}}">
+            <button type="button" class="btn btn-primary" id='writeBtn'>글쓰기<i class="fa-solid fa-pen"></i></button>
+        </a>
     </div>
 
 {% endblock %}
