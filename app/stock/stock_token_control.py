@@ -1,19 +1,21 @@
 import requests
 import json
 
-# with open('config.json', 'r') as f: #Instant Client 접속을 위한 전자지갑속 오라클 클라우드DB 정보(tnsnames.ora 파일)
-with open('../../settings/config.json', 'r') as f: #Instant Client 접속을 위한 전자지갑속 오라클 클라우드DB 정보(tnsnames.ora 파일)
+with open('../settings/config.json', 'r') as f: #몽고DB 정보(tnsnames.ora 파일)
     config = json.load(f)
-db_info = config['DB']
+    
 HAPI_info = config['HANTOAPI']
 
 appKey = HAPI_info['APP_KEY']
 appSecret = HAPI_info['APP_SECRET']
+token_path = "../settings/token.txt"
 
-def create_token(token_path):# 토큰발급 #기한 : 1일
+
+
+def create_token():# 토큰발급 #기한 : 1일
     headers = {"content-type":"application/json"}
     body = {"grant_type":"client_credentials",
-            "appkey":appKey, 
+            "appkey":appKey,
             "appsecret":appSecret}
     PATH = "oauth2/tokenP"
     URL_BASE = "https://openapi.koreainvestment.com:9443"
@@ -72,7 +74,7 @@ def load_token(token_path):
 
 
 
-token_path = "T.txt"
-create_token(token_path)
-token = load_token(token_path)
-# delet_token(token)
+if __name__=="__main__":
+    create_token()
+    # token = load_token(token_path)
+    # delet_token(token)

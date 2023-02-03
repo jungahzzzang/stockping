@@ -15,7 +15,7 @@ with open(abs_path+'/app/settings/config.json', 'r') as f:
     db_info = config['DB']
     api_info = config['NAVERAPI']
 
-    mongo_connect = db_info['MONGO_URI'];
+    mongo_connect = db_info['MONGO_URI']
     client = MongoClient(mongo_connect)
 
 #__init__.py 파일에선 app 객체를 선언하고 각종 모듈, 데이터베이스, 블루프린트 값을 설정한다.
@@ -25,8 +25,10 @@ def create_app():
     app = Flask(__name__)
     from . import home
     from . import topfifty
+    from . import detail
     
     app.register_blueprint(home.blueprint)  #home.py에서 사용할 blueprint 객체를 blurprint로 설정
     app.register_blueprint(topfifty.blueprint)
+    app.register_blueprint(detail.blueprint)
     
     return app
