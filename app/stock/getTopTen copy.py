@@ -1,3 +1,4 @@
+
 import requests
 from bs4 import BeautifulSoup as bs
 import urllib.parse
@@ -14,7 +15,6 @@ def crowl():
     target_soup = bs(target_res.text, 'html.parser')
     data_rows = target_soup.find("table", attrs={"class":"type_2"}).find("tbody").find_all("tr")
     
-
     #데이터 전처리
     data = [] 
     for row in data_rows:
@@ -28,12 +28,12 @@ def crowl():
         for column in columns:
             origin = column.get_text().strip()
             top_stock.append(origin)
-
+            
         del top_stock[5:]
         data.append(top_stock)
 
-
     return data
+
 
 
 
@@ -72,7 +72,7 @@ def get_topten(data):
         data[number][4] = (i[4][:-1])
         number = number +1
     # print(data)
-    
+
     ## 등락률
     # data = getPosentsort(data)
 
@@ -88,4 +88,4 @@ if __name__ == "__main__":
     data = crowl() # 크롤링 한 데이터
     top = get_topten(data)
     for i in top:
-        print("top ten : ",i)
+        print("top ten : ", i)
