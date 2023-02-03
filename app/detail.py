@@ -11,6 +11,11 @@ blueprint = Blueprint("detail", __name__, template_folder="templates", static_fo
 @blueprint.route('/call_top_stock', methods= ['GET'])
 
 
+# @blueprint.route('/detail', methods=['POST','GET'])
+# def index():
+#     return 
+
+
 @blueprint.route('/detail/<Jcode>', methods=['POST','GET'])
 def index(Jcode):
 

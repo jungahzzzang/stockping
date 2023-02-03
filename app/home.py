@@ -1,6 +1,6 @@
 #run.py 기준 경로
 from app import *
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 app = Flask(__name__)
 blueprint = Blueprint("home", __name__, url_prefix="/")

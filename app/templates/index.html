@@ -5,80 +5,9 @@
 {% endblock %}
 
 {% block content %}
-<<<<<<< HEAD
-    <!-- Categories Section Begin -->
-    <section class="categories">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                    <div class="topten categories__item categories__large__item">
-                    <div class="categories__text">
-                        <div class="topten_title_area">
-                            <span class="title">TOP 10 종목</span>
-                        </div>
-                        <div class="realtime_area">
-                            <span class="badge badge-danger">실시간</span>
-                            <span>{{real_time}}</span>
-                        </div>
-                        <table class="topten_table table align-items-center">
-                          <thead class="thead-light">
-                            <tr>
-                              <th>NO</th>
-                              <th>종목명</th>
-                              <th>현재가</th>
-                              <th>전일비</th>
-                              <th>등락률</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {% if top_stock %}
-                            {% for i in top_stock %}
-                              <tr>
-                                {% if "+" in i[4]%}
-                                <td> {{i[0]}} </td>
-                                <td>
-                                    <!-- <form action="/subpage" method="post" name="stock_name"> -->
-                                        <a href ="/detail/{{i[5]}}">
-                                            {{i[1]}}
-                                        </a>
-                                    <!-- </form> -->
-                                </td>
-                                <td>{{i[2]}}</td>
-                                <td class="rise">
-                                    <img src="/static/img/graph/ico_up.gif" alt="">
-                                    {{i[3]}}
-                                  </td>
-                                <td class="rise">{{i[4]}}</td>
-                                {% elif "-" in i[4] %}
-                                <td>{{i[0]}}</td>
-                                <td>{{i[1]}}</td>
-                                <td>{{i[2]}}</td>
-                                <td class="decline">
-                                  <img src="/static/img/graph/ico_down.gif" alt="">
-                                  {{i[3]}}
-                                </td>
-                                <td class="decline">{{i[4]}}</td>
-                                {% endif %}
-                              </tr>
-                          </tbody>
-                          {% endfor %}
-                          {% else %}
-                          <tbody>
-                            <tr>
-                                <td>데이터가 존재하지 않습니다.</td>
-                            </tr>
-                          </tbody>
-                          {% endif %}
-                        </table>
-                    </div>
-                </div>
-              </div>
-            <div class="col-md-6 p-0">
-=======
         <!-- Blog Details Section Begin -->
         <section class="blog-details spad">
             <div class="container">
->>>>>>> 24c31a3d8399ab391e499987fc62d5e9c8c9459c
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
                         <div class="blog__details__content">
@@ -106,7 +35,13 @@
                                         <tr>
                                           {% if "+" in i[4]%}
                                           <td>{{i[0]}}</td>
-                                          <td>{{i[1]}}</td>
+                                          <td>
+                                            <!-- <form action="/subpage" method="post" name="stock_name"> -->
+                                                <a href ="/detail/{{i[5]}}">
+                                                    {{i[1]}}
+                                                </a>
+                                            <!-- </form> -->
+                                        </td>
                                           <td>{{i[2]}}</td>
                                           <td class="rise">
                                               <img src="/static/img/graph/ico_up.gif" alt="">
