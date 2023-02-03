@@ -13,7 +13,20 @@ def crowl():
     target_res = requests.get(target_url)
     target_soup = bs(target_res.text, 'html.parser')
     data_rows = target_soup.find("table", attrs={"class":"type_2"}).find("tbody").find_all("tr")
-    
+    data_index = target_soup.find("table", attrs={"class":"type_2"}).find("tbody").select("tr>td>a")
+   
+
+
+    # Q1: stock_code 50개가 각각 2개씩 총 100개 출력됩니다. 혹시 이유를 아실까요?
+    stock_code_list = []
+    for index in data_index:
+        href = index.attrs['href']
+        stockcode = href[-6:]
+        # print(stockcode)
+        stock_code_list.append(stockcode)
+
+    # Q1에 대해 일단 추가해두었습니다.
+    # print(len(top_stock))
 
     #데이터 전처리
     data = [] 
@@ -32,7 +45,9 @@ def crowl():
         del top_stock[5:]
         data.append(top_stock)
 
-
+    for i in range(len(data)):
+        data[i].append(stock_code_list[i*2])
+    
     return data
 
 
@@ -84,8 +99,9 @@ def get_topten(data):
             topten[i][0] = str(i+1)
     return topten
 
+
 if __name__ == "__main__":
     data = crowl() # 크롤링 한 데이터
     top = get_topten(data)
-    for i in top:
+    for i in data:
         print("top ten : ",i)
