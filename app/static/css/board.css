@@ -1,0 +1,19 @@
+.board-container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.board_table {
+    width: 85% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#writeBtn {
+    background: #922b3a;
+    border: 1px solid #922b3a;
+    font-family: "IBM Plex Sans KR";
+    margin-left: 1660px;
+}

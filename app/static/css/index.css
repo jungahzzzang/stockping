@@ -2,6 +2,16 @@
     font-size: 20px;
     font-weight: bold;
 }
+
+.sub_title {
+	font-size: 13px;
+	background-color: #FFEF99;
+}
+
+.icon {
+	margin-right: 10px;
+}
+
 .topten_title_area {
     display: inline-block;
 }
@@ -24,3 +34,123 @@
     margin-left: 210px;
 }
 
+.news__sidebar {
+	padding-left: 40px;
+}
+
+.news__sidebar__item {
+	margin-bottom: 10px;
+}
+
+.news__sidebar__item .section-title {
+	margin-bottom: 10px;
+}
+
+.news__item {
+	display: block;
+	overflow: hidden;
+	margin-bottom: 30px;
+}
+
+.news__item__text {
+	overflow: hidden;
+	border: 1px solid #F2F4F6;
+	border-radius: 8px;
+	height: 60px;
+}
+
+.news__item__text span.news_title {
+	font-size: 14px;
+	color: #111111;
+	font-weight: 600;
+	line-height: 21px;
+	margin-bottom: 5px;
+}
+
+.news__item__text span.news_date {
+	font-size: 12px;
+	color: #888888;
+	display: block;
+}
+
+.news_container {
+	display: flex;
+	-webkit-box-pack: justify;
+	justify-content: space-between;
+}
+
+.left_content{
+	display: flex;
+	justify-content: left;
+}
+
+.news_content {
+	display: flex;
+	flex-direction: column;
+}
+
+.news_content > h6 {
+	display: block;
+}
+
+.news_content > span {
+	word-break: break-all;
+}
+
+.right_content {
+	position: relative;
+}
+
+.quotient__item {
+	width: 350px;
+	padding: 0;
+	margin: 0;
+	position: relative;
+}
+
+.fade {
+	-webkit-animation-name: fade;
+	-webkit-animation-duration: 1.5s;
+	animation-name: fade;
+	animation-duration: 1.5s;
+  }
+
+  .mySlideDiv {
+	margin-left: 40px;
+  }
+  
+  @-webkit-keyframes fade {
+	from {opacity: .4} 
+	to {opacity: 1}
+  }
+  
+  @keyframes fade {
+	from {opacity: .4} 
+	to {opacity: 1}
+  }
+  
+  /* Next & previous buttons */
+  .prev, .next {
+	cursor: pointer;
+	position: absolute;
+	top: 50%;	
+	width: auto;
+	padding: 16px;
+	margin-top: -22px;
+	color: white;
+	font-weight: bold;
+	font-size: 18px;
+	transition: 0.6s ease;
+	border-radius: 0 3px 3px 0;
+  }
+  
+  /* Position the "next button" to the right */
+  .next {
+	right: 0;
+	border-radius: 3px 0 0 3px;
+  }
+  
+  /* On hover, add a black background color with a little bit see-through */
+  .prev:hover, .next:hover {
+	background-color: rgba(0,0,0,0.8);
+  }

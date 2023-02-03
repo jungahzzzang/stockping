@@ -25,10 +25,12 @@ def create_app():
     app = Flask(__name__)
     from . import home
     from . import topfifty
+    from . import board
     from . import detail
     
     app.register_blueprint(home.blueprint)  #home.py에서 사용할 blueprint 객체를 blurprint로 설정
     app.register_blueprint(topfifty.blueprint)
+    app.register_blueprint(board.blueprint)
     app.register_blueprint(detail.blueprint)
     
     return app

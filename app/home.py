@@ -1,8 +1,6 @@
 #run.py 기준 경로
 from app import *
 from flask import Blueprint
-from app.stock import getTopTen as gt
-
 
 app = Flask(__name__)
 blueprint = Blueprint("home", __name__, url_prefix="/")
@@ -40,19 +38,8 @@ def index():
     target_res = requests.get(target_url)
     target_soup = bs(target_res.text, 'html.parser')
     data_rows = target_soup.find("table", attrs={"class":"type_2"}).find("tbody").find_all("tr")
-    data_index = target_soup.find("table", attrs={"class":"type_2"}).find("tbody").select("tr>td>a")
    
-
-
    
-    # Q1: stock_code 50개가 각각 2개씩 총 100개 출력됩니다. 혹시 이유를 아실까요?
-    stock_code_list = []
-    for index in data_index:
-        href = index.attrs['href']
-        stockcode = href[-6:]
-        # print(stockcode)
-        stock_code_list.append(stockcode) 
-
     data = []
     for row in data_rows:
         # 각 row마다 td를 가지고옴
@@ -68,21 +55,54 @@ def index():
 
         del top_stock[5:]
         data.append(top_stock)
-    
 
-    # Q1에 대해 일단 추가해두었습니다.
-    # print(len(top_stock))
-    for i in range(len(data)):
-        data[i].append(stock_code_list[i*2])
     
-    topten = gt.get_topten(data)
-    print(topten)
-         
+    number = 0
+    for i in data: # % 삭제
+        data[number][4] = (i[4][:-1])
+        number = number +1
+    # print(data)
+
+
+    ## 선택 정렬을 이용해 data변수 정렬
+    def selectionSort(x):
+        length = len(x)
+        for i in range(length-1):
+            indexMin = i
+            for j in range(i+1, length):
+                if float(x[indexMin][-1]) > float(x[j][-1]):
+                    indexMin = j
+            x[i], x[indexMin] = x[indexMin], x[i]
+        return x
+
+    data = selectionSort(data)
+    data.reverse()
+
+    topten = [] #10위까지 저장
+    for i in range(0,len(data)):
+        data[i][4] = data[i][4]+'%' 
+        if i < 10:
+            topten.append(data[i])
+            topten[i][0] = str(i+1)
+          
     return render_template('index.html', real_time=real_time, kospi_value=kospi_value.text, kosdaq_value = kosdaq_value.text, kospi_change=kospi_change, kosdaq_change=kosdaq_change, top_stock=topten)
 
 
 
+@blueprint.route('/api/news')
+def send_news():
 
-# @app.route('/')
-# def gotomain():
-#    return render_template('/main')
+    client = MongoClient(db_info['MONGO_URI'])   
+    db = client[db_name]
+    collection = db[collection_name] 
+    data = list(collection.find({}).sort("pubDate",-1).limit(10)); # 최근 10개
+    news_data = []
+    for _data in data:
+        if _data not in news_data:
+            _data['_id'] = str(_data['_id'])
+            news_data.append(_data)
+
+    return jsonify({"news":news_data})
+
+db_name = db_info['db_name']
+collection_name = db_info['news_collection']

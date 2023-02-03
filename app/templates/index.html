@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
     <!-- Categories Section Begin -->
     <section class="categories">
         <div class="container-fluid">
@@ -73,31 +74,97 @@
                 </div>
               </div>
             <div class="col-md-6 p-0">
+=======
+        <!-- Blog Details Section Begin -->
+        <section class="blog-details spad">
+            <div class="container">
+>>>>>>> 24c31a3d8399ab391e499987fc62d5e9c8c9459c
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                        <div class="categories__item set-bg" data-setbg="/static/img/categories/category-2.jpg">
-                            <div class="categories__text">
-                                <h4>오늘의 지수</h4>
-                                <p>358 items</p>
-                                <a href="#">Shop now</a>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="blog__details__content">
+                            <div class="topten_title_area">
+                                <span class="title"><i class="fa-solid fa-arrow-trend-up icon"></i>TOP 10 종목</span>
+                                <div class="realtime_area">
+                                    <span class="badge badge-danger">실시간</span>
+                                    <span>{{real_time}}</span>
+                                </div>
+                                <div>
+                                    <span class="sub_title">*해당 차트는 시가총액 순위입니다.*</span>
+                                <table class="topten_table table align-items-center">
+                                    <thead class="thead-light">
+                                      <tr>
+                                        <th>NO</th>
+                                        <th>종목명</th>
+                                        <th>현재가</th>
+                                        <th>전일비</th>
+                                        <th>등락률</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% if top_stock %}
+                                      {% for i in top_stock %}
+                                        <tr>
+                                          {% if "+" in i[4]%}
+                                          <td>{{i[0]}}</td>
+                                          <td>{{i[1]}}</td>
+                                          <td>{{i[2]}}</td>
+                                          <td class="rise">
+                                              <img src="/static/img/graph/ico_up.gif" alt="">
+                                              {{i[3]}}
+                                            </td>
+                                          <td class="rise">{{i[4]}}</td>
+                                          {% elif "-" in i[4] %}
+                                          <td>{{i[0]}}</td>
+                                          <td>{{i[1]}}</td>
+                                          <td>{{i[2]}}</td>
+                                          <td class="decline">
+                                            <img src="/static/img/graph/ico_down.gif" alt="">
+                                            {{i[3]}}
+                                          </td>
+                                          <td class="decline">{{i[4]}}</td>
+                                          {% endif %}
+                                        </tr>
+                                    </tbody>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tbody>
+                                      <tr>
+                                          <td>데이터가 존재하지 않습니다.</td>
+                                      </tr>
+                                    </tbody>
+                                    {% endif %}
+                                  </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                        <div class="categories__item set-bg" data-setbg="/static/img/categories/category-3.jpg">
-                            <div class="categories__text">
-                                <h4>오늘의 주식 뉴스</h4>
-                                <p>273 items</p>
-                                <a href="#">Shop now</a>
+                    <div class="col-lg-6 col-md-6">
+                            <div class="news__sidebar">
+                              <div class="news__sidebar__item">
+                                <div class="section-title">
+                                    <span class="title"><i class="fa-solid fa-money-bill-trend-up icon"></i>오늘의 증시</span>
+                                </div>
+                                <div class="quotient__item" id="quotient__item">
+                                    <div class="mySlideDiv fade active">코스닥 {{kosdaq_value}}{{kosdaq_change}}</div>
+                                    <div class="mySlideDiv fade">코스피 {{kospi_value}}{{kospi_change}}</div>
+                                    <a class="prev" onclick="prevSlide()">&#10094;</a>
+                                    <a class="next" onclick="nextSlide()">&#10095;</a>
+                                </div>
+                            </div>
+                            <div class="news__sidebar__item">
+                                <div class="section-title">
+                                    <span class="title"><i class="fa-solid fa-comment-dollar icon"></i>오늘의 경제 뉴스</span>
+                                </div>
+                                <div class="news__item" id="news__item">
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<!-- Categories Section End -->
+        </section>
+        <!-- Blog Details Section End -->
 
 <!-- Product Section Begin -->
 <section class="product spad">
@@ -105,201 +172,138 @@
         <div class="row">
             <div class="col-lg-4 col-md-4">
                 <div class="section-title">
-                    <h4>인기글</h4>
+                    <span class="title"><i class="fa-solid fa-quote-right icon"></i>인기글</span>
                 </div>
             </div>
             <div class="col-lg-8 col-md-8">
-                <ul class="filter__controls">
-                    <li class="active" data-filter="*">All</li>
-                    <li data-filter=".women">Women’s</li>
-                    <li data-filter=".men">Men’s</li>
-                    <li data-filter=".kid">Kid’s</li>
-                    <li data-filter=".accessories">Accessories</li>
-                    <li data-filter=".cosmetic">Cosmetics</li>
-                </ul>
+                
             </div>
         </div>
     </div>
 </section>
 <!-- Product Section End -->
 
-<!-- Trend Section Begin -->
-<!--<section class="trend spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
-                        <h4>Hot Trend</h4>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="/static/img/trend/ht-1.jpg" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Chain bucket bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="/static/img/trend/ht-2.jpg" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Pendant earrings</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="/static/img/trend/ht-3.jpg" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Cotton T-Shirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
-                        <h4>Best seller</h4>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="/static/img/trend/bs-1.jpg" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Cotton T-Shirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="/static/img/trend/bs-2.jpg" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Zip-pockets pebbled tote <br />briefcase</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="/static/img/trend/bs-3.jpg" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Round leather bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
-                        <h4>Feature</h4>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="/static/img/trend/f-1.jpg" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Bow wrap skirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="/static/img/trend/f-2.jpg" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Metallic earrings</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="/static/img/trend/f-3.jpg" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Flap cross-body bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> -->
-<!-- Trend Section End -->
 {% endblock %}
 
 {% block footer %}
-   
+
+<script type="text/javascript">
+    $(document).ready(function () {
+      $(".mySlideDiv").not(".active").hide(); //화면 로딩 후 첫번째 div를 제외한 나머지 숨김
+      
+      setInterval(nextSlide, 4000); //4초(4000)마다 다음 슬라이드로 넘어감
+    });
+
+    //이전 슬라이드
+    function prevSlide() {
+      $(".mySlideDiv").hide(); //모든 div 숨김
+      var allSlide = $(".mySlideDiv"); //모든 div 객체를 변수에 저장
+      var currentIndex = 0; //현재 나타난 슬라이드의 인덱스 변수
+      
+      //반복문으로 현재 active클래스를 가진 div를 찾아 index 저장
+      $(".mySlideDiv").each(function(index,item){ 
+        if($(this).hasClass("active")) {
+          currentIndex = index;
+        }
+            
+      });
+      
+      //새롭게 나타낼 div의 index
+      var newIndex = 0;
+        
+      if(currentIndex <= 0) {
+        //현재 슬라이드의 index가 0인 경우 마지막 슬라이드로 보냄(무한반복)
+        newIndex = allSlide.length-1;
+      } else {
+        //현재 슬라이드의 index에서 한 칸 만큼 뒤로 간 index 지정
+        newIndex = currentIndex-1;
+      }
+
+      //모든 div에서 active 클래스 제거
+      $(".mySlideDiv").removeClass("active");
+        
+      //새롭게 지정한 index번째 슬라이드에 active 클래스 부여 후 show()
+      $(".mySlideDiv").eq(newIndex).addClass("active");
+      $(".mySlideDiv").eq(newIndex).show();
+
+    }
+
+    //다음 슬라이드
+    function nextSlide() {
+      $(".mySlideDiv").hide();
+      var allSlide = $(".mySlideDiv");
+      var currentIndex = 0;
+      
+      $(".mySlideDiv").each(function(index,item){
+        if($(this).hasClass("active")) {
+          currentIndex = index;
+        }
+            
+      });
+      
+      var newIndex = 0;
+      
+      if(currentIndex >= allSlide.length-1) {
+        //현재 슬라이드 index가 마지막 순서면 0번째로 보냄(무한반복)
+        newIndex = 0;
+      } else {
+        //현재 슬라이드의 index에서 한 칸 만큼 앞으로 간 index 지정
+        newIndex = currentIndex+1;
+      }
+
+      $(".mySlideDiv").removeClass("active");
+      $(".mySlideDiv").eq(newIndex).addClass("active");
+      $(".mySlideDiv").eq(newIndex).show();
+      
+    }
+
+    const init = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+      };
+    const url = "/api/news";
+      // 뉴스 데이터 가져오기
+      fetch(url, init)
+        .then((res) => {
+          if (res.status === 200) {
+            return res.json();
+          } else {
+            console.error(`HTTP error! status: ${res.status}`);
+          }
+        })
+        .then((jsonData) => {
+          for (let i = 0; i < jsonData["news"].length; i++) {
+            const item = jsonData["news"][i];
+            let title = item["title"];
+            let link = item["link"];
+            let pubDate = item["pubDate"];
+            let card = `<div class="news__item__text" id="news_item_text">
+                            <div class="news_container">
+                                <div class="left_content">
+                                    <div class="news_content">
+                                        <span class="news_title">${title}</span>
+                                        <span class="news_date">${pubDate}</span>
+                                    </div>
+                                </div>
+                                <div class="news_link">
+                                    <a href="${link}"><img src="/static/img/util/arrow_right.png" alt="" style="width: 20px; height: 20px; filter: invert(92%) sepia(0%) saturate(1580%) hue-rotate(141deg) brightness(102%) contrast(83%);"></a>
+                                </div>
+                            </div>
+                        </div>`;
+            let comments = document.getElementById("news__item");
+            comments.insertAdjacentHTML("beforeend", card);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+        
+
+</script>
+
 {% endblock %}
 
 <!-- Search Begin -->
